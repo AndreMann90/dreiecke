@@ -14,7 +14,7 @@ export default class NewTriangle extends Component {
 
     render() {
         return (
-            <Panel header={'Neues Dreieck'} bsStyle="primary">
+            <Panel header={'Neues Dreieck (Satz des Heron)'} bsStyle="primary">
                 <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
                     <FormGroup controlId="formHorizontalEmail" >
                         <Col componentClass={ControlLabel} sm={2}>
