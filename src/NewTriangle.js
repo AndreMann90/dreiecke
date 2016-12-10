@@ -1,37 +1,77 @@
 import React, { Component } from 'react';
 import DynamicNumber from 'react-dynamic-number';
 
-export default class NewTriangle extends Component {
+import {numToStr} from './util'
 
-    decimals = 2;
+import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, FormControl, Panel } from 'react-bootstrap';
+
+export default class NewTriangle extends Component {
 
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.makeEmpty();
     }
 
     render() {
         return (
-            <div>
-                <p>Fläche: {this.areaText}</p>
-                <form onSubmit={this.handleSubmit}>
-                    <DynamicNumber value={this.state.a} onChange={(e, val) => this.setState({a: val})} separator={','} negative={false} />
-                    <DynamicNumber value={this.state.b} onChange={(e, val) => this.setState({b: val})} separator={','} negative={false} />
-                    <DynamicNumber value={this.state.c} onChange={(e, val) => this.setState({c: val})} separator={','} negative={false} />
-                    <button disabled={!isFinite(this.area)}>{'Hinzufügen'}</button>
-                </form>
-            </div>
+            <Panel header={'Neues Dreieck'} bsStyle="primary">
+                <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
+                    <FormGroup controlId="formHorizontalEmail" >
+                        <Col componentClass={ControlLabel} sm={2}>
+                            A:
+                        </Col>
+                        <Col sm={10}>
+                            <DynamicNumber className="form-control" value={this.state.a} onChange={(e, val) => this.setState({a: val})} separator={','} negative={false} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId="formHorizontalEmail">
+                        <Col componentClass={ControlLabel} sm={2}>
+                            B:
+                        </Col>
+                        <Col sm={10}>
+                            <DynamicNumber className="form-control" value={this.state.b} onChange={(e, val) => this.setState({b: val})} separator={','} negative={false} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId="formHorizontalEmail">
+                        <Col componentClass={ControlLabel} sm={2}>
+                            C:
+                        </Col>
+                        <Col sm={10}>
+                            <DynamicNumber className="form-control" value={this.state.c} onChange={(e, val) => this.setState({c: val})} separator={','} negative={false} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Col componentClass={ControlLabel} sm={2}>
+                            Fläche:
+                        </Col>
+                        <Col sm={10}>
+                            <FormControl.Static>
+                                {this.areaText}
+                            </FormControl.Static>
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Col smOffset={2} sm={10}>
+                            <Button bsStyle="primary" type="submit" disabled={!isFinite(this.area)}><Glyphicon glyph="plus"/>{' Hinzufügen'}</Button>
+                        </Col>
+                    </FormGroup>
+                </Form>
+            </Panel>
         )
     }
 
     handleSubmit(e) {
         e.preventDefault();
         const newItem = {
-            a: this.state.a.toFixed(this.decimals),
-            b: this.state.b.toFixed(this.decimals),
-            c: this.state.c.toFixed(this.decimals),
-            area: this.area.toFixed(this.decimals),
+            a: numToStr(this.state.a),
+            b: numToStr(this.state.b),
+            c: numToStr(this.state.c),
+            area: this.area,
+            areaStr: numToStr(this.area),
             id: Date.now()
         };
         this.makeEmpty();
@@ -45,7 +85,7 @@ export default class NewTriangle extends Component {
     get areaText() {
         const a = this.area;
         if(isFinite(a)) {
-            return a.toFixed(this.decimals);
+            return numToStr(a);
         } else {
             return '';
         }

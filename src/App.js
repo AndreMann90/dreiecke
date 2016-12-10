@@ -3,6 +3,8 @@ import './App.css';
 import NewTriangle from './NewTriangle';
 import TrianlgeList from './TriangleList';
 
+import { PageHeader, Grid, Row, Col } from 'react-bootstrap';
+
 class App extends Component {
 
   constructor(props) {
@@ -13,9 +15,17 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h3>Dreiecksrechner</h3>
-        <NewTriangle onNew={(item) => this.newItem(item)}/>
-        <TrianlgeList items={this.state.items} />
+        <Grid>
+          <Row className="show-grid">
+            <Col md={10} mdOffset={1} sm={12} ><PageHeader>Dreiecksrechner <small>für Baustellenaufmaße</small></PageHeader></Col>
+          </Row>
+          <Row className="show-grid">
+            <Col sm={10} smOffset={1} md={8} mdOffset={2}><NewTriangle onNew={(item) => this.newItem(item)}/></Col>
+          </Row>
+          <Row className="show-grid">
+            <Col sm={12} md={10} mdOffset={1}><TrianlgeList items={this.state.items} /></Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
