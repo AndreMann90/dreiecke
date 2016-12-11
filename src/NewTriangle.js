@@ -3,7 +3,7 @@ import DynamicNumber from 'react-dynamic-number';
 
 import {numToStr} from './util'
 
-import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, Panel } from 'react-bootstrap';
+import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, FormControl, Panel } from 'react-bootstrap';
 
 export default class NewTriangle extends Component {
 
@@ -55,8 +55,10 @@ export default class NewTriangle extends Component {
         const a = this.area;
         if(isFinite(a)) {
             return numToStr(a);
+        } else if(this.state.a === '' || this.state.b === '' || this.state.c === '') {
+            return ''
         } else {
-            return '';
+            return 'Ungültig';
         }
     }
 
@@ -90,7 +92,9 @@ function TextGroup(props) {
                 {props.name}
             </Col>
             <Col sm={10}>
-                {props.text}
+                <FormControl.Static>
+                    {props.text}
+                </FormControl.Static>
             </Col>
         </FormGroup>
     )
