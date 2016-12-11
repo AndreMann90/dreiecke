@@ -3,7 +3,7 @@ import DynamicNumber from 'react-dynamic-number';
 
 import {numToStr} from './util'
 
-import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, FormControl, Panel } from 'react-bootstrap';
+import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, Panel } from 'react-bootstrap';
 
 export default class NewTriangle extends Component {
 
@@ -16,43 +16,12 @@ export default class NewTriangle extends Component {
         return (
             <Panel header={'Neues Dreieck (Satz des Heron)'} bsStyle="primary">
                 <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
-                    <FormGroup controlId="formHorizontalEmail" >
-                        <Col componentClass={ControlLabel} sm={2}>
-                            A:
-                        </Col>
-                        <Col sm={10}>
-                            <DynamicNumber className="form-control" value={this.state.a} onChange={(e, val) => this.setState({a: val})} separator={','} negative={false} />
-                        </Col>
-                    </FormGroup>
 
-                    <FormGroup controlId="formHorizontalEmail">
-                        <Col componentClass={ControlLabel} sm={2}>
-                            B:
-                        </Col>
-                        <Col sm={10}>
-                            <DynamicNumber className="form-control" value={this.state.b} onChange={(e, val) => this.setState({b: val})} separator={','} negative={false} />
-                        </Col>
-                    </FormGroup>
+                    <LengthInput name="A:" value={this.state.a} onChange={(e, val) => this.setState({a: val})} />
+                    <LengthInput name="B:" value={this.state.b} onChange={(e, val) => this.setState({b: val})} />
+                    <LengthInput name="C:" value={this.state.c} onChange={(e, val) => this.setState({c: val})} />
 
-                    <FormGroup controlId="formHorizontalEmail">
-                        <Col componentClass={ControlLabel} sm={2}>
-                            C:
-                        </Col>
-                        <Col sm={10}>
-                            <DynamicNumber className="form-control" value={this.state.c} onChange={(e, val) => this.setState({c: val})} separator={','} negative={false} />
-                        </Col>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Col componentClass={ControlLabel} sm={2}>
-                            Fläche:
-                        </Col>
-                        <Col sm={10}>
-                            <FormControl.Static>
-                                {this.areaText}
-                            </FormControl.Static>
-                        </Col>
-                    </FormGroup>
+                    <TextGroup name="Fläche:" text={this.areaText} />
 
                     <FormGroup>
                         <Col smOffset={2} sm={10}>
@@ -99,4 +68,30 @@ export default class NewTriangle extends Component {
             return Math.sqrt(s * (s-this.state.a) * (s-this.state.b) * (s-this.state.c));
         }
     }
+}
+
+function LengthInput(props) {
+    return (
+        <FormGroup >
+            <Col componentClass={ControlLabel} sm={2}>
+                {props.name}
+            </Col>
+            <Col sm={10}>
+                <DynamicNumber className="form-control" value={props.value} onChange={props.onChange} separator={','} negative={false} />
+            </Col>
+        </FormGroup>
+    )
+}
+
+function TextGroup(props) {
+    return (
+        <FormGroup >
+            <Col componentClass={ControlLabel} sm={2}>
+                {props.name}
+            </Col>
+            <Col sm={10}>
+                {props.text}
+            </Col>
+        </FormGroup>
+    )
 }

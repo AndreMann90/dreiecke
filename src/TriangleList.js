@@ -19,12 +19,25 @@ export default class TrianlgeList extends Component {
                     </thead>
                     <tbody>
                     {this.props.items.map(item =>
-                        (<tr key={item.id}><td>{item.areaStr}</td><td>{item.a}</td><td>{item.b}</td><td>{item.c}</td></tr>)
+                        (<TriangleRow key={item.id} item={item} />)
                     )}
                     </tbody>
                 </Table>
                 <p><strong>Gesamt: {numToStr(this.props.items.reduce((sum, i) => (sum+parseFloat(i.area)), 0))}</strong></p>
             </div>
         );
+    }
+}
+
+class TriangleRow extends Component {
+    render() {
+        return (
+            <tr>
+                <td>{this.props.item.areaStr}</td>
+                <td>{this.props.item.a}</td>
+                <td>{this.props.item.b}</td>
+                <td>{this.props.item.c}</td>
+            </tr>
+        )
     }
 }

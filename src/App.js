@@ -17,13 +17,19 @@ class App extends Component {
       <div>
         <Grid>
           <Row className="show-grid">
-            <Col md={10} mdOffset={1} sm={12} ><PageHeader>Dreiecksrechner <small>für Baustellenaufmaße</small></PageHeader></Col>
+            <Col md={10} mdOffset={1} sm={12} >
+              <PageHeader>Dreiecksrechner <small>für Baustellenaufmaße</small></PageHeader>
+            </Col>
           </Row>
           <Row className="show-grid">
-            <Col sm={10} smOffset={1} md={8} mdOffset={2}><NewTriangle onNew={(item) => this.newItem(item)}/></Col>
+            <Col sm={10} smOffset={1} md={8} mdOffset={2}>
+              <NewTriangle onNew={this.newItem.bind(this)}/>
+            </Col>
           </Row>
           <Row className="show-grid">
-            <Col sm={12} md={10} mdOffset={1}><TrianlgeList items={this.state.items} /></Col>
+            <Col sm={12} md={10} mdOffset={1}>
+              <TrianlgeList items={this.state.items} />
+            </Col>
           </Row>
         </Grid>
       </div>
@@ -31,9 +37,9 @@ class App extends Component {
   }
 
   newItem(newItem) {
-    this.setState((prevState) => ({
-    items: prevState.items.concat(newItem),
-  }));
+    this.setState((prevState) =>
+        ({items: prevState.items.concat(newItem)})
+    );
   }
 }
 
