@@ -28,7 +28,7 @@ class App extends Component {
           </Row>
           <Row className="show-grid">
             <Col sm={12} md={10} mdOffset={1}>
-              <TrianlgeList items={this.state.items} />
+              <TrianlgeList items={this.state.items} onDelete={this.deleteItem.bind(this)} onDeleteAll={this.deleteAllItems.bind(this)} />
             </Col>
           </Row>
         </Grid>
@@ -41,6 +41,16 @@ class App extends Component {
         ({items: prevState.items.concat(newItem)})
     );
   }
+
+  deleteItem(item) {
+      const index = this.state.items.indexOf(item);
+      const newList = this.state.items.splice(index, 1);
+      this.setState({state: newList});
+  }
+
+    deleteAllItems() {
+        this.setState({items: []});
+    }
 }
 
 export default App;
