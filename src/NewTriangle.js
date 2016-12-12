@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import DynamicNumber from 'react-dynamic-number';
 
-import {numToStr} from './util'
+import {numToStr, strToNum} from './util'
 
 import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, FormControl, Panel } from 'react-bootstrap';
 
 export default class NewTriangle extends Component {
 
+    emptyState = {a: '', b: '', c: ''};
+
     constructor(props) {
         super(props);
-        this.makeEmpty();
+        this.state = this.emptyState;
     }
 
     render() {
@@ -17,9 +18,10 @@ export default class NewTriangle extends Component {
             <Panel header={'Neues Dreieck (Satz des Heron)'} bsStyle="primary">
                 <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
 
-                    <LengthInput name="A:" value={this.state.a} onChange={(e, val) => this.setState({a: val})} />
-                    <LengthInput name="B:" value={this.state.b} onChange={(e, val) => this.setState({b: val})} />
-                    <LengthInput name="C:" value={this.state.c} onChange={(e, val) => this.setState({c: val})} />
+                    <LengthInput name="A:" value={this.state.a} onChange={(val) => this.setState({a: val})}
+                                 ref={(input) => { this.textInput = input; }} />
+                    <LengthInput name="B:" value={this.state.b} onChange={(val) => this.setState({b: val})} />
+                    <LengthInput name="C:" value={this.state.c} onChange={(val) => this.setState({c: val})} />
 
                     <TextGroup name="Fläche:" text={this.areaText} />
 
@@ -36,19 +38,16 @@ export default class NewTriangle extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const newItem = {
-            a: numToStr(this.state.a),
-            b: numToStr(this.state.b),
-            c: numToStr(this.state.c),
+            a: this.state.a,
+            b: this.state.b,
+            c: this.state.c,
             area: this.area,
             areaStr: numToStr(this.area),
             id: Date.now()
         };
-        this.makeEmpty();
+        this.setState(this.emptyState);
         this.props.onNew(newItem);
-    }
-
-    makeEmpty() {
-        this.state = {a: '', b: '', c: ''};
+        this.textInput.focus();
     }
 
     get areaText() {
@@ -66,24 +65,51 @@ export default class NewTriangle extends Component {
         if(this.state.a === '' || this.state.b === '' || this.state.c === '') {
             return NaN
         } else {
-            const s = (this.state.a + this.state.b + this.state.c) / 2;
-            return Math.sqrt(s * (s-this.state.a) * (s-this.state.b) * (s-this.state.c));
+            const a = strToNum(this.state.a);
+            const b = strToNum(this.state.b);
+            const c = strToNum(this.state.c);
+            const s = (a + b + c) / 2;
+            return Math.sqrt(s * (s-a) * (s-b) * (s-c));
         }
     }
 }
 
-function LengthInput(props) {
-    return (
-        <FormGroup >
-            <Col componentClass={ControlLabel} sm={2}>
-                {props.name}
-            </Col>
-            <Col sm={10}>
-                <DynamicNumber className="form-control" value={props.value} onChange={props.onChange} separator={','} negative={false} />
-            </Col>
-        </FormGroup>
-    )
+class LengthInput extends Component {
+
+    constructor(props) {
+        super(props);
+        this.focus = this.focus.bind(this);
+    }
+
+    focus() {
+        this.textInput.focus();
+    }
+
+    render() {
+        return (
+            <FormGroup >
+                <Col componentClass={ControlLabel} sm={2}>
+                    {this.props.name}
+                </Col>
+                <Col sm={10}>
+                    <input
+                        type="text" className="form-control" value={this.props.value}
+                        ref={(input) => { this.textInput = input; }}
+                        onChange={this.onChange.bind(this)}/>
+                </Col>
+            </FormGroup>
+        )
+    }
+
+    onChange(e) {
+        const val = e.target.value;
+        if(/^[0-9]*[,]?[0-9]*$/.test(val)) {
+            this.props.onChange(val);
+        }
+    }
 }
+
+
 
 function TextGroup(props) {
     return (
