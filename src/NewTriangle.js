@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {numToStr, strToNum} from './util'
+import {numToStr, strToNum, atLeastTwoDecimals} from './util'
 
 import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, FormControl, Panel } from 'react-bootstrap';
 
@@ -38,9 +38,9 @@ export default class NewTriangle extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const newItem = {
-            a: this.state.a,
-            b: this.state.b,
-            c: this.state.c,
+            a: atLeastTwoDecimals(this.state.a),
+            b: atLeastTwoDecimals(this.state.b),
+            c: atLeastTwoDecimals(this.state.c),
             area: this.area,
             areaStr: numToStr(this.area),
             id: Date.now()
@@ -103,7 +103,7 @@ class LengthInput extends Component {
 
     onChange(e) {
         const val = e.target.value;
-        if(/^[0-9]*[,]?[0-9]*$/.test(val)) {
+        if(/^[0-9]+[,]?[0-9]{0,2}$/.test(val)) {
             this.props.onChange(val);
         }
     }

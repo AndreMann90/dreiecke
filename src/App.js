@@ -22,7 +22,7 @@ class App extends Component {
             </Col>
           </Row>
           <Row className="show-grid">
-            <Col sm={10} smOffset={1} md={8} mdOffset={2}>
+            <Col xs={10} xsOffset={1} sm={8} smOffset={2} md={6} mdOffset={3}>
               <NewTriangle onNew={this.newItem.bind(this)}/>
             </Col>
           </Row>
