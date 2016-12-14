@@ -103,7 +103,9 @@ class LengthInput extends Component {
 
     onChange(e) {
         const val = e.target.value;
-        if(/^[0-9]+[,]?[0-9]{0,2}$/.test(val)) {
+        if(val === ',') {
+            this.props.onChange('0,');
+        } else if(/^[0-9]*[,]?[0-9]{0,2}$/.test(val)) {
             this.props.onChange(val);
         }
     }
