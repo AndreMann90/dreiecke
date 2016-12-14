@@ -15,7 +15,7 @@ export default class TrianlgeList extends Component {
                         <th>A</th>
                         <th>B</th>
                         <th>C</th>
-                        <th><DeleteAll items={this.props.items} onDeleteAll={this.props.onDeleteAll.bind(this)} /></th>
+                        <th className="noprint"><DeleteAll items={this.props.items} onDeleteAll={this.props.onDeleteAll.bind(this)} /></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,7 +38,7 @@ class TriangleRow extends Component {
                 <td>{this.props.item.a}</td>
                 <td>{this.props.item.b}</td>
                 <td>{this.props.item.c}</td>
-                <td><Button bsStyle="link" bsSize="xsmall" onClick={this.handleDelete.bind(this)}>Löschen</Button></td>
+                <td className="noprint"><Button bsStyle="link" bsSize="xsmall" onClick={this.handleDelete.bind(this)}>Löschen</Button></td>
             </tr>
         )
     }
