@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 
-import {numToStr, strToNum, atLeastTwoDecimals} from './util'
+import {numToStr, strToNum, atLeastTwoDecimals} from '../util'
 
 import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, FormControl, Panel } from 'react-bootstrap';
+
+const labelWidth = 3;
+const controlWidth = 9;
 
 /**
  * Generic form for new shapes.
@@ -43,7 +46,7 @@ export default class NewShape extends Component {
                     <TextGroup name="Fläche:" text={this.areaText} />
 
                     <FormGroup>
-                        <Col smOffset={2} sm={10}>
+                        <Col smOffset={labelWidth} sm={controlWidth}>
                             <Button bsStyle="primary" type="submit" disabled={!isFinite(this.area)}><Glyphicon glyph="plus"/>{' Hinzufügen'}</Button>
                         </Col>
                     </FormGroup>
@@ -109,10 +112,10 @@ class LengthInput extends Component {
     render() {
         return (
             <FormGroup >
-                <Col componentClass={ControlLabel} sm={2}>
+                <Col componentClass={ControlLabel} sm={labelWidth}>
                     {this.props.name}
                 </Col>
-                <Col sm={10}>
+                <Col sm={controlWidth}>
                     <input
                         type="text" className="form-control" value={this.props.value}
                         ref={(input) => { this.textInput = input; }}
@@ -137,10 +140,10 @@ class LengthInput extends Component {
 function TextGroup(props) {
     return (
         <FormGroup >
-            <Col componentClass={ControlLabel} sm={2}>
+            <Col componentClass={ControlLabel} sm={labelWidth}>
                 {props.name}
             </Col>
-            <Col sm={10}>
+            <Col sm={controlWidth}>
                 <FormControl.Static>
                     {props.text}
                 </FormControl.Static>

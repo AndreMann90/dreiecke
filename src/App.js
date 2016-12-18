@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import NewTriangle from './NewTriangle';
+import CustomNavbar from './CustomNavbar';
+import NewShapeControl from './NewShapeControl';
 import TriangleList from './TriangleList';
-import PrintIt from './PrintIt';
 
 import { PageHeader, Grid, Row, Col } from 'react-bootstrap';
 
@@ -17,25 +17,21 @@ class App extends Component {
     return (
         <Grid>
           <Row className="show-grid">
-            <Col className="noprint" md={10} mdOffset={1} sm={12} >
-              <PageHeader>Dreiecksrechner <small>für Baustellenaufmaße</small></PageHeader>
+            <Col className="noprint" sm={12} >
+                <CustomNavbar name={this.state.name} onChange={(e) => {this.setState({name: e.target.value})}}/>
             </Col>
           </Row>
           <Row className="show-grid">
-            <Col className="noprint" xs={10} xsOffset={1} sm={8} smOffset={2} md={6} mdOffset={3}>
-              <NewTriangle onNew={this.newItem.bind(this)}/>
+            <Col className="noscreen" sm={12} >
+                { this.state.name === '' ? null : <PageHeader><small>{this.state.name}</small></PageHeader>  }
             </Col>
           </Row>
-          <Row className="show-grid">
-            <Col sm={12} md={10} mdOffset={1}>
-              { this.state.name === '' ? null : <PageHeader className="noscreen"><small>{this.state.name}</small></PageHeader>  }
-              <TriangleList items={this.state.items} onDelete={this.deleteItem.bind(this)} onDeleteAll={this.deleteAllItems.bind(this)} />
+          <Row className="clearfix">
+            <Col className="noprint" sm={6}>
+              <NewShapeControl onNew={this.newItem.bind(this)}/>
             </Col>
-          </Row>
-          <Row className="show-grid">
-            <Col className="noprint" xs={10} xsOffset={1} sm={8} smOffset={2} md={6} mdOffset={3}>
-              <div></div>
-              <PrintIt name={this.state.name} onChange={(e) => {this.setState({name: e.target.value})}}/>
+            <Col sm={6}>
+                <TriangleList items={this.state.items} onDelete={this.deleteItem.bind(this)} onDeleteAll={this.deleteAllItems.bind(this)} />
             </Col>
           </Row>
         </Grid>
