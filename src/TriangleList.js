@@ -11,10 +11,9 @@ export default class TrianlgeList extends Component {
                 <Table striped hover>
                     <thead>
                     <tr>
+                        <th>Form</th>
+                        <th>Formel</th>
                         <th>Fläche</th>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>C</th>
                         <th className="noprint"><DeleteAll items={this.props.items} onDeleteAll={this.props.onDeleteAll.bind(this)} /></th>
                     </tr>
                     </thead>
@@ -34,10 +33,9 @@ class TriangleRow extends Component {
     render() {
         return (
             <tr>
+                <td>{this.props.item.shape}</td>
+                <td>{this.props.item.formula}</td>
                 <td>{this.props.item.areaStr}</td>
-                <td>{this.props.item.a}</td>
-                <td>{this.props.item.b}</td>
-                <td>{this.props.item.c}</td>
                 <td className="noprint"><Button bsStyle="link" bsSize="xsmall" onClick={this.handleDelete.bind(this)}>Löschen</Button></td>
             </tr>
         )
