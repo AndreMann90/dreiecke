@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import NewShape from './NewShape'
+import sectorOfCircle from './sectorOfCircle.svg'
 
 export default class NewSectorOfCircle extends Component {
 
@@ -13,7 +14,7 @@ export default class NewSectorOfCircle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = 'sectorOfCircle';
+            newItem.shape = <img src={sectorOfCircle} alt="sectorOfCircle" />;
             newItem.formula = '(2/3) * ' + newItemExpaned[g] + ' * ' + newItemExpaned[h];
             this.props.onNew(newItem)
         };

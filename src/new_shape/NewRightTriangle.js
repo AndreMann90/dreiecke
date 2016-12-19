@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import NewShape from './NewShape'
+import triangle from './right-rectangle.svg';
 
 export default class NewRightTriangle extends Component {
 
@@ -13,7 +14,7 @@ export default class NewRightTriangle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = 'rightTriangle';
+            newItem.shape = <img src={triangle} alt="right triangle" />;
             newItem.formula = '(' + newItemExpaned[a] + ' * ' + newItemExpaned[b] + ') / 2';
             this.props.onNew(newItem)
         };

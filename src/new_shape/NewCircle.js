@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import NewShape from './NewShape'
+import circle from './circle.svg';
 
 export default class NewCircle extends Component {
 
@@ -12,7 +13,7 @@ export default class NewCircle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = 'circle';
+            newItem.shape = <img src={circle} alt="circle" />;
             newItem.formula = 'Pi * ' + newItemExpaned[r] + '^2';
             this.props.onNew(newItem)
         };

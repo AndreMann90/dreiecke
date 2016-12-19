@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import NewShape from './NewShape'
+import rectangle from './rectangle.svg';
 
 export default class NewRectangle extends Component {
 
@@ -13,7 +14,7 @@ export default class NewRectangle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = 'rectangle';
+            newItem.shape = <img src={rectangle} alt="rectangle" />;
             newItem.formula = newItemExpaned[a] + ' * ' + newItemExpaned[b];
             this.props.onNew(newItem)
         };

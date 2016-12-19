@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import NewShape from './NewShape'
+import trapezoid from './trapezoid.svg';
 
 export default class NewTrapezoid extends Component {
 
@@ -14,7 +15,7 @@ export default class NewTrapezoid extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = 'trapezoid';
+            newItem.shape = <img src={trapezoid} alt="trapezoid" />;
             newItem.formula = '(' + newItemExpaned[a] + ' + ' + newItemExpaned[b] + ') / 2 * ' + newItemExpaned[c];
             this.props.onNew(newItem)
         };
