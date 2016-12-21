@@ -40,7 +40,7 @@ class App extends Component {
 
   newItem(newItem) {
     this.setState((prevState) =>
-        ({items: prevState.items.concat(newItem)})
+        ({items: prevState.items.concat(newItem).sort((a, b) => a.areaNumber - b.areaNumber)}) // "sort" is a bit wasteful, but no "insert sorted" as function available and the list will be small enough to NOT encounter any performance impact
     );
   }
 
@@ -50,9 +50,9 @@ class App extends Component {
       this.setState({state: newList});
   }
 
-    deleteAllItems() {
-        this.setState({items: []});
-    }
+  deleteAllItems() {
+      this.setState({items: []});
+  }
 }
 
 export default App;

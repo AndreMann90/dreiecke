@@ -36,7 +36,10 @@ export default class NewShape extends Component {
             <Panel header={this.props.headline} bsStyle="primary">
                 <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
 
-                    <LengthInput key={first} ref={(input) => { this.textInput = input; }}
+                    <PositiveInput name={'Fl.Nr.:'} value={this.state.areaNumber}
+                                   onChange={(no) => this.setState({areaNumber: no})} />
+
+                    <LengthInput ref={(input) => { this.textInput = input; }}
                                  name={first} value={this.state[first]} onChange={(val) => this.setState({[first]: val})} />
 
                     {this.props.inputNames.slice(1).map((n) =>
@@ -47,7 +50,9 @@ export default class NewShape extends Component {
 
                     <FormGroup>
                         <Col smOffset={labelWidth} sm={controlWidth}>
-                            <Button bsStyle="primary" type="submit" disabled={!isFinite(this.area)}><Glyphicon glyph="plus"/>{' Hinzufügen'}</Button>
+                            <Button bsStyle="primary" type="submit" disabled={!isFinite(this.area)}>
+                                <Glyphicon glyph="plus"/>{' Hinzufügen'}
+                            </Button>
                         </Col>
                     </FormGroup>
                 </Form>
@@ -58,6 +63,7 @@ export default class NewShape extends Component {
     handleSubmit(e) {
         e.preventDefault();
         let newShape = {
+            areaNumber: this.state.areaNumber,
             area: this.area,
             areaStr: numToStr(this.area),
             id: Date.now()
@@ -135,6 +141,30 @@ class LengthInput extends Component {
     }
 }
 
+
+class PositiveInput extends Component {
+
+    render() {
+        return (
+            <FormGroup >
+                <Col componentClass={ControlLabel} sm={labelWidth}>
+                    {this.props.name}
+                </Col>
+                <Col sm={controlWidth}>
+                    <input
+                        type="text" className="form-control" value={this.props.value} onChange={this.onChange.bind(this)}/>
+                </Col>
+            </FormGroup>
+        )
+    }
+
+    onChange(e) {
+        const val = e.target.value;
+        if(/^[0-9]*$/.test(val)) {
+            this.props.onChange(val);
+        }
+    }
+}
 
 
 function TextGroup(props) {
