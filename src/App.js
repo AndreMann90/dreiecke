@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import CustomNavbar from './CustomNavbar';
 import NewShapeControl from './NewShapeControl';
-import TriangleList from './TriangleList';
+import ShapeList from './ShapeList';
 
 import { PageHeader, Grid, Row, Col } from 'react-bootstrap';
 
@@ -31,7 +31,7 @@ class App extends Component {
               <NewShapeControl onNew={this.newItem.bind(this)}/>
             </Col>
             <Col sm={6}>
-                <TriangleList items={this.state.items} onDelete={this.deleteItem.bind(this)} onDeleteAll={this.deleteAllItems.bind(this)} />
+                <ShapeList items={this.state.items} onDelete={this.deleteItem.bind(this)} onDeleteAll={this.deleteAllItems.bind(this)} />
             </Col>
           </Row>
         </Grid>

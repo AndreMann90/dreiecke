@@ -4,7 +4,7 @@ import {numToStr} from './util'
 
 import { Table, Button } from 'react-bootstrap';
 
-export default class TrianlgeList extends Component {
+export default class ShapeList extends Component {
     render() {
         return (
             <div>
