@@ -5,6 +5,11 @@ import {numToStr} from './util'
 import { Table, Button } from 'react-bootstrap';
 
 export default class ShapeList extends Component {
+
+    shouldComponentUpdate(nextProps) {
+        return this.props.items !== nextProps.items; // thanks to immutable list
+    }
+
     render() {
         return (
             <div>
