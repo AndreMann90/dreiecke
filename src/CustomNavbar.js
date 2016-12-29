@@ -1,8 +1,14 @@
-import React from 'react';
-import { Navbar, FormGroup, FormControl, Button } from 'react-bootstrap';
+import React, {Component} from 'react';
+import { Navbar, Nav, NavItem, FormGroup, FormControl, Button } from 'react-bootstrap';
 
-export default function (props) {
-    return (
+export default class CustomNavbar extends Component {
+
+    shouldComponentUpdate(nextProps) {
+        return this.props.name !== nextProps.name;
+    }
+
+    render() {
+      return (
         <Navbar>
             <Navbar.Header>
                 <Navbar.Brand>
@@ -15,13 +21,26 @@ export default function (props) {
                     <Navbar.Form pullLeft>
                         <FormGroup>
                             <FormControl type="text" placeholder="Name der Baustelle"
-                                         value={props.name} onChange={props.onChange.bind(this)}/>
+                                         value={this.props.name} onChange={this.props.onChange.bind(this)}/>
                         </FormGroup>
                         {' '}
                         <Button type="submit">Drucken</Button>
                     </Navbar.Form>
                 </form>
+                <Nav pullRight onSelect={this.undoRedo.bind(this)}>
+                    <NavItem eventKey={1}>Rückgängig</NavItem>
+                    <NavItem eventKey={2}>Wiederholen</NavItem>
+                </Nav>
             </Navbar.Collapse>
         </Navbar>
-    )
+      )
+    }
+
+    undoRedo(eventKey) {
+        if(eventKey === 1) {
+            this.props.undo()
+        } else if(eventKey === 2){
+            this.props.redo();
+        }
+    }
 }
