@@ -6,6 +6,7 @@ import triangle from './triangle.svg';
 export default class NewTriangle extends Component {
 
     render() {
+        const name = "Dreieck";
         const a = 'A:';
         const b = 'B:';
         const c = 'C:';
@@ -16,13 +17,13 @@ export default class NewTriangle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = <img src={triangle} alt="triangle" />;
+            newItem.shape = <img src={triangle} alt={name} />;
             newItem.formula = newItemExpaned[a] + ' | ' + newItemExpaned[b] + ' | ' + newItemExpaned[c];
             this.props.onNew(newItem)
         };
 
         return (
-            <NewShape inputNames={[a, b, c]} headline={'Dreieck (Satz des Heron)'} areaFcn={area} onNew={onNew}/>
+            <NewShape inputNames={[a, b, c]} headline={name} areaFcn={area} onNew={onNew} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
         )
     }
 }

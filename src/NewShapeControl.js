@@ -40,22 +40,22 @@ export default class NewShapeControl extends Component {
                     <Col sm={8}>
                         <Tab.Content animation>
                             <Tab.Pane eventKey="first">
-                                <NewTriangle onNew={this.props.onNew.bind(this)} />
+                                <NewTriangle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="second">
-                                <NewTrapezoid onNew={this.props.onNew.bind(this)} />
+                                <NewTrapezoid onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="third">
-                                <NewRectangle onNew={this.props.onNew.bind(this)} />
+                                <NewRectangle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="forth">
-                                <NewCircle onNew={this.props.onNew.bind(this)} />
+                                <NewCircle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="fifth">
-                                <NewSectorOfCircle onNew={this.props.onNew.bind(this)} />
+                                <NewSectorOfCircle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="sixth">
-                                <NewRightTriangle onNew={this.props.onNew.bind(this)} />
+                                <NewRightTriangle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>

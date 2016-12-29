@@ -51,7 +51,7 @@ class TriangleRow extends Component {
 }
 
 function DeleteAll(props) {
-    if (props.items.length > 0) {
+    if (props.items.size > 0) {
         return <Button bsStyle="link" bsSize="xsmall" onClick={props.onDeleteAll.bind(this)}>Alle löschen</Button>;
     } else {
         return <div />

@@ -14,9 +14,11 @@ const controlWidth = 9;
  * <ul>
  *   <li>inputNames: a list of sting with the names of the input field</li>
  *   <li>headline: string for headline of panel</li>
+ *   <li>areaNo: a integer with the area number</li>
+ *   <li>onAreaNoChange: a callback-function for the area number</li>
  *   <li>areaFcn: a function to compute the area of the concrete shape. Input is one object that has the inputNames
  *                as property names each with a positive float as property value </li>
- *   <li>onNew: a function with the new shape as argument</li>
+ *   <li>onNew: a callback-function with the new shape as argument</li>
  * </ul>
  */
 export default class NewShape extends Component {
@@ -36,8 +38,7 @@ export default class NewShape extends Component {
             <Panel header={this.props.headline} bsStyle="primary">
                 <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
 
-                    <PositiveInput name={'Fl.Nr.:'} value={this.state.areaNumber}
-                                   onChange={(no) => this.setState({areaNumber: no})} />
+                    <PositiveInput name={'Fl.Nr.:'} value={this.props.areaNo} onChange={this.props.onAreaNoChange} />
 
                     <LengthInput ref={(input) => { this.textInput = input; }}
                                  name={first} value={this.state[first]} onChange={(val) => this.setState({[first]: val})} />
@@ -63,7 +64,7 @@ export default class NewShape extends Component {
     handleSubmit(e) {
         e.preventDefault();
         let newShape = {
-            areaNumber: this.state.areaNumber,
+            areaNumber: parseFloat(this.props.areaNo),
             area: this.area,
             areaStr: numToStr(this.area),
             id: Date.now()
@@ -96,6 +97,8 @@ export default class NewShape extends Component {
 NewShape.propTypes = {
     inputNames: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     headline: React.PropTypes.node.isRequired,
+    areaNo: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
+    onAreaNoChange: React.PropTypes.func.isRequired,
     areaFcn: React.PropTypes.func.isRequired,
     onNew: React.PropTypes.func.isRequired
 };

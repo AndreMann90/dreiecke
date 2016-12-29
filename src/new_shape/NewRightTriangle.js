@@ -6,6 +6,7 @@ import triangle from './right-rectangle.svg';
 export default class NewRightTriangle extends Component {
 
     render() {
+        const name = "Dreieck (rechtwinklig)";
         const a = 'A:';
         const b = 'B:';
 
@@ -14,13 +15,13 @@ export default class NewRightTriangle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = <img src={triangle} alt="right triangle" />;
+            newItem.shape = <img src={triangle} alt={name} />;
             newItem.formula = '(' + newItemExpaned[a] + ' * ' + newItemExpaned[b] + ') / 2';
             this.props.onNew(newItem)
         };
 
         return (
-            <NewShape inputNames={[a, b]} headline={'Rechtwinkliges Rechteck'} areaFcn={area} onNew={onNew}/>
+            <NewShape inputNames={[a, b]} headline={name} areaFcn={area} onNew={onNew} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
         )
     }
 }
