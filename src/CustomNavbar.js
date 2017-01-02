@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux'
+import { ActionCreators } from 'redux-undo';
+import { nameChanged } from './actions'
+
 import { Navbar, Nav, NavItem, FormGroup, FormControl, Button } from 'react-bootstrap';
 
-export default class CustomNavbar extends Component {
+class CustomNavbarView extends Component {
 
     shouldComponentUpdate(nextProps) {
         return this.props.name !== nextProps.name;
@@ -21,7 +25,7 @@ export default class CustomNavbar extends Component {
                     <Navbar.Form pullLeft>
                         <FormGroup>
                             <FormControl type="text" placeholder="Name der Baustelle"
-                                         value={this.props.name} onChange={this.props.onChange.bind(this)}/>
+                                         value={this.props.name} onChange={this.props.onNameChange.bind(this)}/>
                         </FormGroup>
                         {' '}
                         <Button type="submit">Drucken</Button>
@@ -44,3 +48,35 @@ export default class CustomNavbar extends Component {
         }
     }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Connection to store /////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const mapStateToProps = (state) => {
+    return {
+        name: state.name
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        undo: () => {
+            dispatch(ActionCreators.undo())
+        },
+        redo: () => {
+            dispatch(ActionCreators.redo())
+        },
+        onNameChange: (nameEvent) => {
+            dispatch(nameChanged(nameEvent.target.value))
+        }
+    }
+};
+
+const CustomNavbar = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CustomNavbarView);
+
+export default CustomNavbar;

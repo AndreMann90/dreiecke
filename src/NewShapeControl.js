@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { addItem, areaNoChanged } from './actions'
 
 import NewTriangle from './new_shape/NewTriangle'
 import NewTrapezoid from './new_shape/NewTrapezoid'
@@ -9,7 +11,7 @@ import NewRightTriangle from './new_shape/NewRightTriangle'
 
 import {Tab, NavItem, Col, Nav, Row} from 'react-bootstrap'
 
-export default class NewShapeControl extends Component {
+class NewShapeView extends Component {
 
     render() {
         return (
@@ -64,3 +66,31 @@ export default class NewShapeControl extends Component {
         )
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Connection to store /////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const mapStateToProps = (state) => {
+    return {
+        areaNo: state.areaNo.present
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onNew: (item) => {
+            dispatch(addItem(item))
+        },
+        onAreaNoChange: (areaNo) => {
+            dispatch(areaNoChanged(areaNo))
+        }
+    }
+};
+
+const NewShapeControl = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(NewShapeView);
+
+export default NewShapeControl

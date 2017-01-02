@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { deleteItem, deleteAllItems } from './actions'
 
 import {numToStr} from './util'
 
 import { Table, Button } from 'react-bootstrap';
 
-export default class ShapeList extends Component {
+class ShapeListView extends Component {
 
     shouldComponentUpdate(nextProps) {
         return this.props.items !== nextProps.items; // thanks to immutable list
@@ -62,3 +64,32 @@ function DeleteAll(props) {
         return <div />
     }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Connection to store /////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const mapStateToProps = (state) => {
+    return {
+        items: state.items.present
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDelete: (item) => {
+            dispatch(deleteItem(item))
+        },
+        onDeleteAll: () => {
+            dispatch(deleteAllItems())
+        }
+    }
+};
+
+const ShapeList = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ShapeListView);
+
+export default ShapeList
