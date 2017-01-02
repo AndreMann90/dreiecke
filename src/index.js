@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware  } from 'redux'
 import createLogger from 'redux-logger';
-import measurementApp from './reducers'
+import rootReducer from './redux/index'
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -13,7 +13,7 @@ let withStateDiff = false;
 let logger = createLogger({diff: withStateDiff});
 
 let store = createStore(
-    measurementApp,
+    rootReducer,
     applyMiddleware(logger)
 );
 

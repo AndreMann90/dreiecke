@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { deleteItem, deleteAllItems } from './actions'
+import { deleteItem, deleteAllItems } from './redux/itemList'
 
 import {numToStr} from './util'
 
@@ -72,7 +72,7 @@ function DeleteAll(props) {
 
 const mapStateToProps = (state) => {
     return {
-        items: state.items.present
+        items: state.present.items
     }
 };
 

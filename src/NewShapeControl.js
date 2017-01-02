@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addItem, areaNoChanged } from './actions'
+import { addItem, areaNoChanged } from './redux/itemList'
 
 import NewTriangle from './new_shape/NewTriangle'
 import NewTrapezoid from './new_shape/NewTrapezoid'
@@ -73,7 +73,7 @@ class NewShapeView extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        areaNo: state.areaNo.present
+        areaNo: state.present.areaNo
     }
 };
 

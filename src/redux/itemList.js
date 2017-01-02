@@ -1,12 +1,23 @@
-import { ADD_ITEM, DELETE_ITEM, DELETE_ALL_ITEMS, AREA_NO_CHANGED, NAME_CHANGED } from './actions'
-
-import { combineReducers } from 'redux'
-import undoable from 'redux-undo';
-
-import Immutable from 'immutable';
+import Immutable from 'immutable'
 
 
-function items(state =  Immutable.List(), action) {
+// actions
+export const ADD_ITEM = 'ADD_ITEM';
+export const addItem = item => ({ type: ADD_ITEM, payload: item });
+
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const deleteItem = item => ({ type: DELETE_ITEM, payload: item });
+
+export const DELETE_ALL_ITEMS = 'DELETE_ALL_ITEMS';
+export const deleteAllItems = () => ({ type: DELETE_ALL_ITEMS});
+
+
+export const AREA_NO_CHANGED = 'AREA_NO_CHANGED';
+export const areaNoChanged = (areaNo) => ({ type: AREA_NO_CHANGED, payload: areaNo});
+
+
+// reducer
+export function items(state =  Immutable.List(), action) {
     switch (action.type) {
 
         case ADD_ITEM:
@@ -33,7 +44,7 @@ function items(state =  Immutable.List(), action) {
     }
 }
 
-function areaNo(state =  1, action) {
+export function areaNo(state =  1, action) {
     switch (action.type) {
 
         case AREA_NO_CHANGED:
@@ -49,23 +60,3 @@ function areaNo(state =  1, action) {
             return state
     }
 }
-
-function name(state =  '', action) {
-    switch (action.type) {
-
-        case NAME_CHANGED:
-            return action.payload;
-
-        default:
-            return state
-    }
-}
-
-
-const measurementApp = combineReducers({
-    items: undoable(items),
-    areaNo: undoable(areaNo),
-    name
-});
-
-export default measurementApp
