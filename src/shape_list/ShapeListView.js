@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { deleteItem, deleteAllItems } from './redux/itemList'
 
-import {numToStr} from './util'
+import { Table, Button, Glyphicon } from 'react-bootstrap';
 
-import { Table, Button, Checkbox } from 'react-bootstrap';
-
-const checkBoxStyle = {
-    textAlign: 'center',
-    verticalAlign: 'middle'
-};
-
-const centerStyle = {
-    display: 'block',
-    margin: 'auto'
-};
-
-class ShapeListView extends Component {
+export default class ShapeListView extends Component {
 
     shouldComponentUpdate(nextProps) {
         return this.props.items !== nextProps.items; // thanks to immutable list
@@ -44,28 +30,37 @@ class ShapeListView extends Component {
                     </thead>
                     <tbody>
                         {this.props.items.map(item =>
-                            (<TriangleRow key={item.id} item={item}
+                            (<TriangleRow key={item.id} item={item} isChecked={this.props.itemSelectedFcn(item)}
                                           deletable={this.props.deletable} onDelete={this.props.onDelete.bind(this)}
                                           selectable={this.props.selectable} onSelect={this.props.onSelect.bind(this)}/>)
                         )}
                     </tbody>
                 </Table>
-                <p><strong>Gesamt: {numToStr(this.props.items.reduce((sum, i) => (sum+parseFloat(i.area)), 0))}</strong></p>
+                <p><strong>Gesamt: {this.props.overallArea}</strong></p>
             </div>
         );
     }
 }
 
+ShapeListView.defaultProps = {
+    deletable: false,
+    selectable: false,
+    itemSelectedFcn: () => false
+};
+
 class TriangleRow extends Component {
+
+    checked = <td><Button bsStyle="danger" bsSize="xsmall" onClick={this.handleSelect.bind(this)}><Glyphicon glyph="minus"/></Button></td>;
+    notChecked = <td><Button bsStyle="success" bsSize="xsmall" onClick={this.handleSelect.bind(this)}><Glyphicon glyph="plus"/></Button></td>;
+
     render() {
+        let selectTableData = null;
+        if(this.props.selectable) {
+            selectTableData = this.props.isChecked ? this.checked : this.notChecked
+        }
         return (
             <tr>
-                {!this.props.selectable
-                    ? null
-                    : <td style={checkBoxStyle}>
-                        <Checkbox style={centerStyle} checked={this.props.item.isChecked} onChange={this.handleSelect.bind(this)}/>
-                    </td>
-                }
+                {selectTableData}
                 <td>{this.props.item.areaNumber}</td>
                 <td>{this.props.item.shape}</td>
                 <td>{this.props.item.formula}</td>
@@ -94,43 +89,3 @@ function DeleteAll(props) {
         return <div />
     }
 }
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Connection to store /////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        items: state.present.items,
-        allItemsSelected: true,//state.present.items.every(item => item.selected === true), // TODO use reselect
-        deletable: ownProps.deletable,
-        selectable: ownProps.selectable
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onDelete: (item) => {
-            dispatch(deleteItem(item))
-        },
-        onDeleteAll: () => {
-            dispatch(deleteAllItems())
-        },
-        onSelect: (item) => {
-            console.log(item);
-            //TODO
-        },
-        onSelectAll: () => {
-            console.log('selectall');
-            //TODO
-        }
-    }
-};
-
-const ShapeList = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ShapeListView);
-
-export default ShapeList

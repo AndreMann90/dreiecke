@@ -4,7 +4,7 @@ import './App.css';
 
 import CustomNavbar from './CustomNavbar';
 import NewShapeControl from './NewShapeControl';
-import ShapeList from './ShapeList';
+import ShapeList from './shape_list/ShapeList';
 import ShapeControl from './PositionControl'
 
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap';

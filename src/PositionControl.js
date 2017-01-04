@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { activeKey, positionNameChanged, addPosition, deletePosition } from './redux/positionList'
 
-import ShapeList from './ShapeList'
+import ShapeListAdded from './shape_list/ShapeListAdded'
+import ShapeListRemaining from './shape_list/ShapeListRemaining'
 import { Panel, Tab, Glyphicon, InputGroup, FormControl, Button, Col, NavItem, Row, Nav, Label } from 'react-bootstrap';
 
 const newPositionKey = 'npk';
@@ -41,9 +42,9 @@ class ShapeControlView extends Component {
                                 return (
                                     <Tab.Pane key={key} eventKey={key}>
                                         <h4>{this.decorateName(key, value)} <Label>Zugeordnete Flächen</Label></h4>
-                                        <ShapeList selectable={true}/>
+                                        <ShapeListAdded/>
                                         <Panel style={{marginTop: 50}} header="Flächen zum Zuordnen">
-                                            <ShapeList selectable={true}/>
+                                            <ShapeListRemaining/>
                                         </Panel>
                                     </Tab.Pane>
                                 )

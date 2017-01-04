@@ -15,11 +15,18 @@ export const positionNameChanged = (position, name) => ({ type: POSITION_NAME_CH
 export const ACTIVE_KEY = 'ACTIVE_KEY';
 export const activeKey = key => ({ type: ACTIVE_KEY, payload: key });
 
+export const AREA_ADDED = 'AREA_ADDED';
+export const areaAdded = areaId => ({ type: AREA_ADDED, payload: areaId });
+
+export const AREA_REMOVED = 'AREA_REMOVED';
+export const areaRemoved = areaId => ({ type: AREA_REMOVED, payload: areaId });
+
 
 // reducer
 const initialState = Immutable.Map({
     activeKey: 0,
-    positions: Immutable.OrderedMap()
+    positions: Immutable.OrderedMap(),
+    posToAreasMap: Immutable.OrderedMap()
 });
 
 export default function positions(state = initialState, action) {
@@ -28,10 +35,13 @@ export default function positions(state = initialState, action) {
         case ADD_POSITION:
             const lastKey = state.get('positions').findLastKey(() => true);
             const nextKey = (lastKey == null) ? 1 : (lastKey + 1);
-            return state.setIn(['positions', nextKey], '').setIn(['activeKey'], nextKey);
+            return state.setIn(['positions', nextKey], '')
+                .setIn(['posToAreasMap', nextKey], Immutable.Set())
+                .setIn(['activeKey'], nextKey);
 
         case DELETE_POSITION:
-            const newState = state.deleteIn(['positions', action.payload]);
+            const newState = state.deleteIn(['positions', action.payload])
+                .deleteIn(['posToAreasMap', action.payload]);
             if(action.payload === state.get('activeKey')) {
                 const prevKey = state.get('positions').findLastKey((v, key) => key < action.payload);
                 if(prevKey != null) {
@@ -49,6 +59,14 @@ export default function positions(state = initialState, action) {
             } else {
                 return state;
             }
+
+        case AREA_ADDED:
+            return state.updateIn(['posToAreasMap', state.get('activeKey')], areas => areas.add(action.payload));
+
+        case AREA_REMOVED:
+            return state.updateIn(['posToAreasMap', state.get('activeKey')], areas => areas.delete(action.payload));
+
+         // Handle actions DELETE_ITEM and DELETE_ALL_ITEMS here as well? Pro: remove unnecessary item ids
 
         default:
             return state
