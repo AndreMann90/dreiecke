@@ -2,13 +2,16 @@ import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable';
 import undoable, { includeAction } from 'redux-undo';
 
-import name, {NAME_CHANGED_WITH_UNDO, nameChangedEpic} from './name'
+import name, {NAME_CHANGED, nameChangedEpic} from './name'
 import {items, areaNo, ADD_ITEM, DELETE_ITEM, DELETE_ALL_ITEMS} from './itemList'
+import {ADD_POSITION, DELETE_POSITION, AREA_ADDED, AREA_REMOVED, POSITION_NAME_CHANGED, positionNameChangedEpic} from './positionList'
+import { undo } from './undo'
 import positions from './positionList'
 
 
 export const rootEpic = combineEpics(
-    nameChangedEpic
+    nameChangedEpic,
+    positionNameChangedEpic
 );
 
 
@@ -20,7 +23,8 @@ const rootReducer = undoable(
         name
     }),
     {
-        filter: includeAction([ADD_ITEM, DELETE_ITEM, DELETE_ALL_ITEMS, NAME_CHANGED_WITH_UNDO])
+        filter: includeAction([ADD_ITEM, DELETE_ITEM, DELETE_ALL_ITEMS, undo(NAME_CHANGED),
+            ADD_POSITION, DELETE_POSITION, undo(POSITION_NAME_CHANGED), AREA_ADDED, AREA_REMOVED])
     }
 );
 

@@ -1,5 +1,7 @@
 import Immutable from 'immutable'
 
+import {DELETE_ITEM, DELETE_ALL_ITEMS} from './itemList'
+import {undo, noUndo, throttleUndoEpic} from './undo'
 
 // actions
 export const ADD_POSITION = 'ADD_POSITION';
@@ -26,10 +28,11 @@ export const areaRemoved = areaId => ({ type: AREA_REMOVED, payload: areaId });
 const initialState = Immutable.Map({
     activeKey: 0,
     positions: Immutable.OrderedMap(),
-    posToAreasMap: Immutable.OrderedMap()
+    posToAreasMap: Immutable.Map()
 });
 
 export default function positions(state = initialState, action) {
+    console.log(state.toJS());
     switch (action.type) {
 
         case ADD_POSITION:
@@ -50,7 +53,8 @@ export default function positions(state = initialState, action) {
             }
             return newState;
 
-        case POSITION_NAME_CHANGED:
+        case undo(POSITION_NAME_CHANGED):
+        case noUndo(POSITION_NAME_CHANGED):
             return state.setIn(['positions', action.payload.position], action.payload.name);
 
         case ACTIVE_KEY:
@@ -66,9 +70,17 @@ export default function positions(state = initialState, action) {
         case AREA_REMOVED:
             return state.updateIn(['posToAreasMap', state.get('activeKey')], areas => areas.delete(action.payload));
 
-         // Handle actions DELETE_ITEM and DELETE_ALL_ITEMS here as well? Pro: remove unnecessary item ids
+        case DELETE_ITEM:
+            return state.update('posToAreasMap', posToAreasMap => posToAreasMap.map(areas => areas.delete(action.payload.id)));
+
+        case DELETE_ALL_ITEMS:
+            return state.update('posToAreasMap', posToAreasMap => posToAreasMap.map(areas => areas.clear()));
 
         default:
             return state
     }
 }
+
+
+// epics
+export const positionNameChangedEpic = throttleUndoEpic(POSITION_NAME_CHANGED);
