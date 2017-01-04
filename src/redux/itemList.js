@@ -33,7 +33,7 @@ export function items(state =  Immutable.List(), action) {
             }
 
         case DELETE_ITEM:
-            const index = this.state.items.indexOf(action.payload);
+            const index = state.indexOf(action.payload);
             return state.delete(index);
 
         case DELETE_ALL_ITEMS:

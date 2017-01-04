@@ -4,7 +4,17 @@ import { deleteItem, deleteAllItems } from './redux/itemList'
 
 import {numToStr} from './util'
 
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Checkbox } from 'react-bootstrap';
+
+const checkBoxStyle = {
+    textAlign: 'center',
+    verticalAlign: 'middle'
+};
+
+const centerStyle = {
+    display: 'block',
+    margin: 'auto'
+};
 
 class ShapeListView extends Component {
 
@@ -18,16 +28,25 @@ class ShapeListView extends Component {
                 <Table striped hover>
                     <thead>
                     <tr>
+                        {!this.props.selectable
+                            ? null
+                            : <th/>
+                        }
                         <th>Fl.Nr.</th>
                         <th>Form</th>
                         <th>Formel</th>
                         <th>Fläche</th>
-                        <th className="noprint"><DeleteAll items={this.props.items} onDeleteAll={this.props.onDeleteAll.bind(this)} /></th>
+                        {!this.props.deletable
+                            ? null
+                            : <th><DeleteAll items={this.props.items} onDeleteAll={this.props.onDeleteAll.bind(this)} /></th>
+                        }
                     </tr>
                     </thead>
                     <tbody>
                         {this.props.items.map(item =>
-                            (<TriangleRow key={item.id} item={item} onDelete={this.props.onDelete.bind(this)} />)
+                            (<TriangleRow key={item.id} item={item}
+                                          deletable={this.props.deletable} onDelete={this.props.onDelete.bind(this)}
+                                          selectable={this.props.selectable} onSelect={this.props.onSelect.bind(this)}/>)
                         )}
                     </tbody>
                 </Table>
@@ -41,19 +60,30 @@ class TriangleRow extends Component {
     render() {
         return (
             <tr>
+                {!this.props.selectable
+                    ? null
+                    : <td style={checkBoxStyle}>
+                        <Checkbox style={centerStyle} checked={this.props.item.isChecked} onChange={this.handleSelect.bind(this)}/>
+                    </td>
+                }
                 <td>{this.props.item.areaNumber}</td>
                 <td>{this.props.item.shape}</td>
                 <td>{this.props.item.formula}</td>
                 <td>{this.props.item.areaStr}</td>
-                <td className="noprint">
-                    <Button bsStyle="link" bsSize="xsmall" onClick={this.handleDelete.bind(this)}>Löschen</Button>
-                </td>
+                {!this.props.deletable
+                    ? null
+                    : <td><Button bsStyle="link" bsSize="xsmall" onClick={this.handleDelete.bind(this)}>Löschen</Button></td>
+                }
             </tr>
         )
     }
 
     handleDelete() {
         this.props.onDelete(this.props.item);
+    }
+
+    handleSelect() {
+        this.props.onSelect(this.props.item);
     }
 }
 
@@ -70,9 +100,12 @@ function DeleteAll(props) {
 // Connection to store /////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        items: state.present.items
+        items: state.present.items,
+        allItemsSelected: true,//state.present.items.every(item => item.selected === true), // TODO use reselect
+        deletable: ownProps.deletable,
+        selectable: ownProps.selectable
     }
 };
 
@@ -83,6 +116,14 @@ const mapDispatchToProps = (dispatch) => {
         },
         onDeleteAll: () => {
             dispatch(deleteAllItems())
+        },
+        onSelect: (item) => {
+            console.log(item);
+            //TODO
+        },
+        onSelectAll: () => {
+            console.log('selectall');
+            //TODO
         }
     }
 };
