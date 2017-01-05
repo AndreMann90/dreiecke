@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { activeKey, positionNameChanged, addPosition, deletePosition } from './redux/positionList'
+import { activeKey, positionNameChanged, addPosition, deletePosition, activeKeySelector, positionsSelector } from './redux/positionList'
 
 import ShapeListAdded from './shape_list/ShapeListAdded'
 import ShapeListRemaining from './shape_list/ShapeListRemaining'
@@ -78,8 +78,8 @@ class ShapeControlView extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        activeKey: state.present.positions.get('activeKey'),
-        positions: state.present.positions.get('positions')
+        activeKey: activeKeySelector(state),
+        positions: positionsSelector(state)
     }
 };
 

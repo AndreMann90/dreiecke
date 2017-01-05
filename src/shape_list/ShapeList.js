@@ -1,14 +1,12 @@
 import { connect } from 'react-redux'
-import { deleteItem, deleteAllItems } from '../redux/itemList'
-
-import {numToStr} from '../util'
+import { deleteItem, deleteAllItems, itemsSelector, overallAreaSelector } from '../redux/itemList'
 
 import ShapeListView from './ShapeListView'
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        items: state.present.items,
-        overallArea: numToStr(state.present.items.reduce((sum, i) => (sum+parseFloat(i.area)), 0)),
+        items: itemsSelector(state),
+        overallArea: overallAreaSelector(state),
         deletable: ownProps.deletable
     }
 };
@@ -20,14 +18,6 @@ const mapDispatchToProps = (dispatch) => {
         },
         onDeleteAll: () => {
             dispatch(deleteAllItems())
-        },
-        onSelect: (item) => {
-            console.log(item);
-            //TODO
-        },
-        onSelectAll: () => {
-            console.log('selectall');
-            //TODO
         }
     }
 };

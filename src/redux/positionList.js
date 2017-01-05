@@ -1,6 +1,7 @@
 import Immutable from 'immutable'
+import { createSelector } from 'reselect'
 
-import {DELETE_ITEM, DELETE_ALL_ITEMS} from './itemList'
+import {DELETE_ITEM, DELETE_ALL_ITEMS, itemsSelector, reduceItemsToOverallArea} from './itemList'
 import {undo, noUndo, throttleUndoEpic} from './undo'
 
 // actions
@@ -32,7 +33,6 @@ const initialState = Immutable.Map({
 });
 
 export default function positions(state = initialState, action) {
-    console.log(state.toJS());
     switch (action.type) {
 
         case ADD_POSITION:
@@ -81,6 +81,30 @@ export default function positions(state = initialState, action) {
     }
 }
 
+// selectors
+export const activeKeySelector = state => state.present.positions.get('activeKey');
+export const positionsSelector = state => state.present.positions.get('positions');
+
+const selectedItemIdsOfActivePositionSelector = state => state.present.positions.getIn(['posToAreasMap', activeKeySelector(state)]);
+// partitions the items into two lists: selected and not selected items for active position
+const selectedItemsPartition = createSelector(
+    itemsSelector, selectedItemIdsOfActivePositionSelector,
+    (items, selectedItemsIds) => items.reduce(
+            (partition, item) => {selectedItemsIds.has(item.id) ? partition.selected.push(item) : partition.notSelected.push(item); return partition},
+            {selected: [], notSelected: []}
+        )
+);
+export const selectedItemsForActivePositionSelector = state => selectedItemsPartition(state).selected;
+export const notSelectedItemsForActivePositionSelector = state => selectedItemsPartition(state).notSelected;
+
+export const overallAreaOfSelectedItemsForActivePositionSelector = createSelector(
+    selectedItemsForActivePositionSelector,
+    items => reduceItemsToOverallArea(items)
+);
+export const overallAreaOfNonSelectedItemsForActivePositionSelector = createSelector(
+    notSelectedItemsForActivePositionSelector,
+    items => reduceItemsToOverallArea(items)
+);
 
 // epics
 export const positionNameChangedEpic = throttleUndoEpic(POSITION_NAME_CHANGED);

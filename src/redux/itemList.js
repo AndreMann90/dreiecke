@@ -1,5 +1,7 @@
 import Immutable from 'immutable'
+import { createSelector } from 'reselect'
 
+import {numToStr} from '../util'
 
 // actions
 export const ADD_ITEM = 'ADD_ITEM';
@@ -60,3 +62,14 @@ export function areaNo(state =  1, action) {
             return state
     }
 }
+
+// selectors
+export const itemsSelector = state => state.present.items;
+export const areaNoSelector = state => state.present.areaNo;
+
+export const reduceItemsToOverallArea = items => numToStr(items.reduce((sum, i) => (sum+parseFloat(i.area)), 0)); // not a selector, but a helper fcn
+export const overallAreaSelector = createSelector(
+    itemsSelector,
+    items => reduceItemsToOverallArea(items)
+);
+

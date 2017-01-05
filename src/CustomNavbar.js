@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { ActionCreators } from 'redux-undo';
-import { nameChanged } from './redux/name'
+import { nameChanged, nameSelector } from './redux/name'
 
 import { Navbar, Nav, NavItem, FormGroup, FormControl, Button } from 'react-bootstrap';
 
@@ -56,7 +56,7 @@ class CustomNavbarView extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        name: state.present.name
+        name: nameSelector(state)
     }
 };
 

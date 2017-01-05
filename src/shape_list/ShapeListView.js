@@ -45,7 +45,10 @@ export default class ShapeListView extends Component {
 ShapeListView.defaultProps = {
     deletable: false,
     selectable: false,
-    itemSelectedFcn: () => false
+    itemSelectedFcn: () => false,
+    onSelect: () => {},
+    onDelete: () => {},
+    onDeleteAll: () => {}
 };
 
 class TriangleRow extends Component {
