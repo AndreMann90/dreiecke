@@ -84,6 +84,7 @@ export default function positions(state = initialState, action) {
 // selectors
 export const activeKeySelector = state => state.present.positions.get('activeKey');
 export const positionsSelector = state => state.present.positions.get('positions');
+const posToAreasMapSelector = state => state.present.positions.get('posToAreasMap');
 
 const selectedItemIdsOfActivePositionSelector = state => state.present.positions.getIn(['posToAreasMap', activeKeySelector(state)]);
 // partitions the items into two lists: selected and not selected items for active position
@@ -104,6 +105,20 @@ export const overallAreaOfSelectedItemsForActivePositionSelector = createSelecto
 export const overallAreaOfNonSelectedItemsForActivePositionSelector = createSelector(
     notSelectedItemsForActivePositionSelector,
     items => reduceItemsToOverallArea(items)
+);
+
+// specialized selector designed for an isolated print preview (not performance optimized for use with other views which manipulate the same data)
+export const printPreviewSelector = createSelector(
+    positionsSelector, itemsSelector, posToAreasMapSelector,
+    (positions, items, posToAreasMap) => positions.reduce( // use reduce instead of map, because want the positions "become"/"reduce to" a list
+        (result, positionName, positionKey) => {
+            const selectedItemIds = posToAreasMap.get(positionKey);
+            const selectedItems = items.filter(item => selectedItemIds.has(item.id));
+            const overallArea = reduceItemsToOverallArea(selectedItems);
+            result.push({positionName, selectedItems, overallArea});
+            return result
+        }, []
+    )
 );
 
 // epics
