@@ -11,7 +11,7 @@ export default class ShapeListView extends Component {
     render() {
         return (
             <div>
-                <Table striped hover>
+                <Table striped>
                     <thead>
                     <tr>
                         {!this.props.selectable

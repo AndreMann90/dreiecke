@@ -6,6 +6,7 @@ import createLogger from 'redux-logger';
 import { createEpicMiddleware } from 'redux-observable';
 import { rootEpic } from './redux/index';
 import rootReducer from './redux/index'
+import {addPosition} from './redux/positionList'
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -22,6 +23,8 @@ let store = createStore(
     rootReducer,
     applyMiddleware(epicMiddleware, logger)
 );
+
+store.dispatch(addPosition()); // one empty position
 
 render(
     <Provider store={store}>
