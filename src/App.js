@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import './App.css';
-
 import CustomNavbar from './CustomNavbar';
 import NewShapeControl from './NewShapeControl';
 import ShapeList from './shape_list/ShapeList';
