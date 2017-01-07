@@ -6,9 +6,9 @@ import CustomNavbar from './CustomNavbar';
 import NewShapeControl from './NewShapeControl';
 import ShapeList from './shape_list/ShapeList';
 import ShapeControl from './PositionControl'
-import PrintPreview from './PrintPreview'
+import Foot from './Foot'
 
-import { Grid, Row, Col, PageHeader, Panel } from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
 export default class App extends Component {
 
@@ -38,14 +38,11 @@ export default class App extends Component {
             </Row>
             <Row className="clearfix">
                 <Col sm={12}>
-                    <PageHeader>Schritt 3 <small>Druckvorschau überprüfen</small></PageHeader>
-                    <Panel>
-                        <PrintPreview/>
-                    </Panel>
+                    <PageHeader/>
+                    <Foot/>
                 </Col>
             </Row>
         </Grid>
-        <div className="noscreen"><PrintPreview/></div>
       </div>
     );
   }

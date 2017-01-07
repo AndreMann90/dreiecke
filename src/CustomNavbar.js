@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { ActionCreators } from 'redux-undo';
 import { nameChanged, nameSelector } from './redux/name'
@@ -21,16 +22,15 @@ class CustomNavbarView extends Component {
                 <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-                <form onSubmit={() => window.print()}>
-                    <Navbar.Form pullLeft>
-                        <FormGroup>
-                            <FormControl type="text" placeholder="Name der Baustelle"
-                                         value={this.props.name} onChange={this.props.onNameChange.bind(this)}/>
-                        </FormGroup>
-                        {' '}
-                        <Button type="submit">Drucken</Button>
-                    </Navbar.Form>
-                </form>
+                <Navbar.Form pullLeft>
+                    <FormGroup>
+                        <FormControl type="text" placeholder="Name der Baustelle"
+                                     value={this.props.name} onChange={this.props.onNameChange.bind(this)}/>
+                    </FormGroup>
+                </Navbar.Form>
+                <Navbar.Form pullRight>
+                    <Button onClick={() => browserHistory.push('/print-preview')}>Zur Druckansicht</Button>
+                </Navbar.Form>
                 <Nav pullRight onSelect={this.undoRedo.bind(this)}>
                     <NavItem eventKey={1}>Rückgängig</NavItem>
                     <NavItem eventKey={2}>Wiederholen</NavItem>
