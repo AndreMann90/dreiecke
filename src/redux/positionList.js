@@ -115,7 +115,7 @@ export const printPreviewSelector = createSelector(
             const selectedItemIds = posToAreasMap.get(positionKey);
             const selectedItems = items.filter(item => selectedItemIds.has(item.id));
             const overallArea = reduceItemsToOverallArea(selectedItems);
-            result.push({positionName, selectedItems, overallArea});
+            result.push({positionName, positionKey, selectedItems, overallArea});
             return result
         }, []
     )

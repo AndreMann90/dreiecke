@@ -17,8 +17,8 @@ class PrintPreviewView extends Component {
         return (
             <div>
                 <PageHeader>{this.props.name}</PageHeader>
-                {this.props.positionsWithAreas.map(element =>
-                    (<Position name={element.positionName} items={element.selectedItems} overallArea={element.overallArea}/>)
+                {this.props.positionsWithAreas.map((element, index) =>
+                    (<Position key={element.positionKey} name={`${index+1}: ` + element.positionName} items={element.selectedItems} overallArea={element.overallArea}/>)
                 )}
             </div>
         )
