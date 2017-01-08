@@ -8,6 +8,7 @@ import NewRectangle from './new_shape/NewRectangle'
 import NewCircle from './new_shape/NewCircle'
 import NewSectorOfCircle from './new_shape/NewSectorOfCircle'
 import NewRightTriangle from './new_shape/NewRightTriangle'
+import CustomShape from './new_shape/CustomShape'
 
 import {Tab, NavItem, Col, Nav, Row} from 'react-bootstrap'
 
@@ -15,49 +16,55 @@ class NewShapeView extends Component {
 
     render() {
         return (
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Tab.Container id="left-tabs-example" defaultActiveKey="triangle">
                 <Row className="clearfix">
                     <Col sm={4}>
                         <Nav bsStyle="pills" stacked>
-                            <NavItem eventKey="first">
+                            <NavItem eventKey="triangle">
                                 Dreieck
                             </NavItem>
-                            <NavItem eventKey="second">
+                            <NavItem eventKey="r triangle">
+                                Dreieck (rechtwinkling)
+                            </NavItem>
+                            <NavItem eventKey="trapezoid">
                                 Trapez
                             </NavItem>
-                            <NavItem eventKey="third">
+                            <NavItem eventKey="rectangle">
                                 Rechteck
                             </NavItem>
-                            <NavItem eventKey="forth">
+                            <NavItem eventKey="circle">
                                 Kreis
                             </NavItem>
-                            <NavItem eventKey="fifth">
+                            <NavItem eventKey="sectorOfCircle">
                                 Kreisabschnitt
                             </NavItem>
-                            <NavItem eventKey="sixth">
-                                Dreieck (rechtwinkling)
+                            <NavItem eventKey="customShape">
+                                Eigenes
                             </NavItem>
                         </Nav>
                     </Col>
                     <Col sm={8}>
                         <Tab.Content animation>
-                            <Tab.Pane eventKey="first">
+                            <Tab.Pane eventKey="triangle">
                                 <NewTriangle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
-                            <Tab.Pane eventKey="second">
+                            <Tab.Pane eventKey="r triangle">
+                                <NewRightTriangle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="trapezoid">
                                 <NewTrapezoid onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
-                            <Tab.Pane eventKey="third">
+                            <Tab.Pane eventKey="rectangle">
                                 <NewRectangle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
-                            <Tab.Pane eventKey="forth">
+                            <Tab.Pane eventKey="circle">
                                 <NewCircle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
-                            <Tab.Pane eventKey="fifth">
+                            <Tab.Pane eventKey="sectorOfCircle">
                                 <NewSectorOfCircle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
-                            <Tab.Pane eventKey="sixth">
-                                <NewRightTriangle onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
+                            <Tab.Pane eventKey="customShape">
+                                <CustomShape onNew={this.props.onNew.bind(this)} areaNo={this.props.areaNo} onAreaNoChange={this.props.onAreaNoChange.bind(this)} />
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>

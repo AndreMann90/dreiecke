@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 
 import {numToStr, strToNum, atLeastTwoDecimals} from '../util'
 
-import { Button, Glyphicon, Form, FormGroup, Col, ControlLabel, FormControl, Panel } from 'react-bootstrap';
+import {FocusableInput, positivePattern, lengthPattern, convenientZeroFcn, TextGroup, AddButton} from './InputElements';
+import { Form, Panel } from 'react-bootstrap';
 
-const labelWidth = 3;
-const controlWidth = 9;
 
 /**
  * Generic form for new shapes.
@@ -38,24 +37,19 @@ export default class NewShape extends Component {
             <Panel header={this.props.headline} bsStyle="primary">
                 <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
 
-                    <PositiveInput name={'Fl.Nr.:'} value={this.props.areaNo} onChange={this.props.onAreaNoChange} />
+                    <FocusableInput pattern={positivePattern} name={'Fl.Nr.:'} value={this.props.areaNo} onChange={this.props.onAreaNoChange} />
 
-                    <LengthInput ref={(input) => { this.textInput = input; }}
+                    <FocusableInput pattern={lengthPattern} preFcn={convenientZeroFcn} ref={(input) => { this.textInput = input; }}
                                  name={first} value={this.state[first]} onChange={(val) => this.setState({[first]: val})} />
 
                     {this.props.inputNames.slice(1).map((n) =>
-                        (<LengthInput key={n} name={n} value={this.state[n]} onChange={(val) => this.setState({[n]: val})} />)
+                        (<FocusableInput pattern={lengthPattern} preFcn={convenientZeroFcn} key={n}
+                                      name={n} value={this.state[n]} onChange={(val) => this.setState({[n]: val})} />)
                     )}
 
                     <TextGroup name="Fläche:" text={this.areaText} />
 
-                    <FormGroup>
-                        <Col smOffset={labelWidth} sm={controlWidth}>
-                            <Button bsStyle="primary" type="submit" disabled={!isFinite(this.area)}>
-                                <Glyphicon glyph="plus"/>{' Hinzufügen'}
-                            </Button>
-                        </Col>
-                    </FormGroup>
+                    <AddButton disabled={!isFinite(this.area)}/>
                 </Form>
             </Panel>
         )
@@ -102,85 +96,3 @@ NewShape.propTypes = {
     areaFcn: React.PropTypes.func.isRequired,
     onNew: React.PropTypes.func.isRequired
 };
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Internal Classes ////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class LengthInput extends Component {
-
-    constructor(props) {
-        super(props);
-        this.focus = this.focus.bind(this);
-    }
-
-    focus() {
-        this.textInput.focus();
-    }
-
-    render() {
-        return (
-            <FormGroup >
-                <Col componentClass={ControlLabel} sm={labelWidth}>
-                    {this.props.name}
-                </Col>
-                <Col sm={controlWidth}>
-                    <input
-                        type="text" className="form-control" value={this.props.value}
-                        ref={(input) => { this.textInput = input; }}
-                        onChange={this.onChange.bind(this)}/>
-                </Col>
-            </FormGroup>
-        )
-    }
-
-    onChange(e) {
-        const val = e.target.value;
-        if(val === ',') {
-            this.props.onChange('0,');
-        } else if(/^[0-9]*[,]?[0-9]{0,2}$/.test(val)) {
-            this.props.onChange(val);
-        }
-    }
-}
-
-
-class PositiveInput extends Component {
-
-    render() {
-        return (
-            <FormGroup >
-                <Col componentClass={ControlLabel} sm={labelWidth}>
-                    {this.props.name}
-                </Col>
-                <Col sm={controlWidth}>
-                    <input
-                        type="text" className="form-control" value={this.props.value} onChange={this.onChange.bind(this)}/>
-                </Col>
-            </FormGroup>
-        )
-    }
-
-    onChange(e) {
-        const val = e.target.value;
-        if(/^[0-9]*$/.test(val)) {
-            this.props.onChange(val);
-        }
-    }
-}
-
-
-function TextGroup(props) {
-    return (
-        <FormGroup >
-            <Col componentClass={ControlLabel} sm={labelWidth}>
-                {props.name}
-            </Col>
-            <Col sm={controlWidth}>
-                <FormControl.Static>
-                    {props.text}
-                </FormControl.Static>
-            </Col>
-        </FormGroup>
-    )
-}
