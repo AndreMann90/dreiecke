@@ -16,6 +16,7 @@ const configureStore = (initState) => {
     //setup store
     let store = createStore(
         rootReducer,
+        initState,
         applyMiddleware(epicMiddleware, logger)
     );
 
