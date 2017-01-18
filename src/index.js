@@ -22,3 +22,17 @@ render(
     </Provider>,
     rootElement
 );
+
+/* To test whether its really a universal java app, build with the following and run the server (if your network connection is to fast to see it otherwise)
+setTimeout(() => {
+    render(
+        <Provider store={store}>
+            <Router history={browserHistory}>
+                <Route path="/" component={App}/>
+                <Route path="/print-preview" component={PrintPreview}/>
+            </Router>
+        </Provider>,
+        rootElement
+    );
+}, 1000);
+*/

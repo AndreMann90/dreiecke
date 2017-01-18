@@ -53,13 +53,12 @@ ShapeListView.defaultProps = {
 
 class TriangleRow extends Component {
 
-    checked = <td><Button bsStyle="danger" bsSize="xsmall" onClick={this.handleSelect.bind(this)}><Glyphicon glyph="minus"/></Button></td>;
-    notChecked = <td><Button bsStyle="success" bsSize="xsmall" onClick={this.handleSelect.bind(this)}><Glyphicon glyph="plus"/></Button></td>;
-
     render() {
         let selectTableData = null;
         if(this.props.selectable) {
-            selectTableData = this.props.isChecked ? this.checked : this.notChecked
+            selectTableData = this.props.isChecked
+                ? <td><Button bsStyle="danger" bsSize="xsmall" onClick={this.handleSelect.bind(this)}><Glyphicon glyph="minus"/></Button></td>
+                : <td><Button bsStyle="success" bsSize="xsmall" onClick={this.handleSelect.bind(this)}><Glyphicon glyph="plus"/></Button></td>;
         }
         return (
             <tr>
