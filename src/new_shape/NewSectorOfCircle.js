@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import Isvg from 'react-inlinesvg';
 
 import NewShape from './NewShape'
-import sectorOfCircle from './sectorOfCircle.svg'
 
 export default class NewSectorOfCircle extends Component {
 
@@ -15,7 +15,7 @@ export default class NewSectorOfCircle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = <img src={sectorOfCircle} alt={name} />;
+            newItem.shape = <Isvg src={process.env.PUBLIC_URL + "/svg/sectorOfCircle.svg"} cacheGetRequests={true}>{name}</Isvg>;
             newItem.formula = '(2/3) * ' + newItemExpaned[g] + ' * ' + newItemExpaned[h];
             this.props.onNew(newItem)
         };
