@@ -16,8 +16,9 @@ const rootElement = document.getElementById('app');
 render(
     <Provider store={store}>
         <Router history={browserHistory}>
-            <Route path="/" component={App}/>
-            <Route path="/print-preview" component={PrintPreview}/>
+            <Route path="/" component={App}/> {/*TODO make overview*/}
+            <Route path="/:id" component={App}/>
+            <Route path="/:id/print-preview" component={PrintPreview}/>
         </Router>
     </Provider>,
     rootElement

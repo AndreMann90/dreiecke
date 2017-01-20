@@ -1,9 +1,11 @@
 
 // PostgreSQL connection details
-export const dbConnection = {
+const dbConnection = {
     host: 'localhost',
-    port: 5433,
-    database: 'my-database-name',
-    user: 'user-name',
-    password: 'user-password'
+    port: 5432,
+    database: 'Baustellen',
+    user: 'postgres',
+    password: 'postgres'
 };
+
+export default dbConnection;

@@ -10,6 +10,10 @@ import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
 export default class App extends Component {
 
+  componentDidMount() {
+      // TODO: this.props.params.id put in store
+  }
+
   render() {
     return (
       <div>
