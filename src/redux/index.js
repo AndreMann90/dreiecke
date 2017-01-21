@@ -8,6 +8,7 @@ import {ADD_POSITION, DELETE_POSITION, AREA_ADDED, AREA_REMOVED, POSITION_NAME_C
 import { undo } from './undo'
 import positions from './positionList'
 import baustellen from './baustellen'
+import id from './id'
 
 
 export const rootEpic = combineEpics(
@@ -29,7 +30,11 @@ const currentBaustelleReducer = undoable(
     }
 );
 
-const rootReducer = combineReducers({current: currentBaustelleReducer, baustellen: baustellen});
+const rootReducer = combineReducers({
+    current: currentBaustelleReducer,
+    baustellen,
+    id
+});
 
 
 export default rootReducer

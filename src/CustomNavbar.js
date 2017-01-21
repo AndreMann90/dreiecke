@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { ActionCreators } from 'redux-undo';
 import { nameChanged, nameSelector } from './redux/name'
+import { printPreviewLinkSelector } from './redux/id'
 
 import { Navbar, Nav, NavItem, FormGroup, FormControl, Button } from 'react-bootstrap';
 
@@ -29,7 +30,7 @@ class CustomNavbarView extends Component {
                     </FormGroup>
                 </Navbar.Form>
                 <Navbar.Form pullRight>
-                    <Button onClick={() => browserHistory.push('/print-preview')}>Zur Druckansicht</Button>
+                    <Button onClick={() => browserHistory.push(this.props.printPreviewLink)}>Zur Druckansicht</Button>
                 </Navbar.Form>
                 <Nav pullRight onSelect={this.undoRedo.bind(this)}>
                     <NavItem eventKey={1}>Rückgängig</NavItem>
@@ -56,7 +57,8 @@ class CustomNavbarView extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        name: nameSelector(state)
+        name: nameSelector(state),
+        printPreviewLink: printPreviewLinkSelector(state)
     }
 };
 

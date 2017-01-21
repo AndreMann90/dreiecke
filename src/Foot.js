@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { printPreviewLinkSelector } from './redux/id'
+
 import { browserHistory } from 'react-router'
 import { ActionCreators } from 'redux-undo';
 
@@ -13,7 +15,7 @@ class FootView extends Component {
                 <span>
                     <Button bsStyle="link" onClick={() => this.props.undo()}>Rückgängig</Button>
                     <Button bsStyle="link" onClick={() => this.props.redo()}>Wiederholen</Button>
-                    <Button onClick={() => browserHistory.push('/print-preview')}>Zur Druckansicht</Button>
+                    <Button onClick={() => browserHistory.push(this.props.printPreviewLink)}>Zur Druckansicht</Button>
                 </span>
             </p>
         );
@@ -27,7 +29,7 @@ class FootView extends Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        printPreviewLink: printPreviewLinkSelector(state)
     }
 };
 

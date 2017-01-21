@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { setId } from './redux/id'
 
 import CustomNavbar from './CustomNavbar';
 import NewShapeControl from './NewShapeControl';
@@ -8,10 +10,10 @@ import Foot from './Foot'
 
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
-export default class App extends Component {
+class AppView extends Component {
 
   componentDidMount() {
-      // TODO: this.props.params.id put in store
+      this.props.setId(this.props.params.id);
   }
 
   render() {
@@ -49,3 +51,28 @@ export default class App extends Component {
     );
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Connection to store /////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const mapStateToProps = (state) => {
+    return {
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setId: (id) => {
+            dispatch(setId(id))
+        }
+    }
+};
+
+const App = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AppView);
+
+export default App;
