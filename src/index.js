@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { Router, Route, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
 import configureStore from './redux/configureStore'
+import Overview from './Overview';
 import App from './App';
 import PrintPreview from './PrintPreview'
 import 'bootstrap/dist/css/bootstrap.css';
@@ -16,7 +17,7 @@ const rootElement = document.getElementById('app');
 render(
     <Provider store={store}>
         <Router history={browserHistory}>
-            <Route path="/" component={App}/> {/*TODO make overview*/}
+            <Route path="/" component={Overview}/>
             <Route path="/:id" component={App}/>
             <Route path="/:id/print-preview" component={PrintPreview}/>
         </Router>

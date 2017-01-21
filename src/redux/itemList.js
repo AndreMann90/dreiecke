@@ -64,8 +64,8 @@ export function areaNo(state =  1, action) {
 }
 
 // selectors
-export const itemsSelector = state => state.present.items;
-export const areaNoSelector = state => state.present.areaNo;
+export const itemsSelector = state => state.current.present.items;
+export const areaNoSelector = state => state.current.present.areaNo;
 
 export const reduceItemsToOverallArea = items => numToStr(items.reduce((sum, i) => (sum+parseFloat(i.area)), 0)); // not a selector, but a helper fcn
 export const overallAreaSelector = createSelector(

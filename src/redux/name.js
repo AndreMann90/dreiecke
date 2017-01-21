@@ -21,7 +21,7 @@ export default function name(state =  '', action) {
 }
 
 // selectors
-export const nameSelector = state => state.present.name;
+export const nameSelector = state => state.current.present.name;
 
 // epics
 export const nameChangedEpic = throttleUndoEpic(NAME_CHANGED);

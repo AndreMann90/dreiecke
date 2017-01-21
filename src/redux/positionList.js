@@ -82,11 +82,11 @@ export default function positions(state = initialState, action) {
 }
 
 // selectors
-export const activeKeySelector = state => state.present.positions.get('activeKey');
-export const positionsSelector = state => state.present.positions.get('positions');
-const posToAreasMapSelector = state => state.present.positions.get('posToAreasMap');
+export const activeKeySelector = state => state.current.present.positions.get('activeKey');
+export const positionsSelector = state => state.current.present.positions.get('positions');
+const posToAreasMapSelector = state => state.current.present.positions.get('posToAreasMap');
 
-const selectedItemIdsOfActivePositionSelector = state => state.present.positions.getIn(['posToAreasMap', activeKeySelector(state)]);
+const selectedItemIdsOfActivePositionSelector = state => state.current.present.positions.getIn(['posToAreasMap', activeKeySelector(state)]);
 // partitions the items into two lists: selected and not selected items for active position
 const selectedItemsPartition = createSelector(
     itemsSelector, selectedItemIdsOfActivePositionSelector,

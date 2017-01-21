@@ -7,6 +7,7 @@ import {items, areaNo, ADD_ITEM, DELETE_ITEM, DELETE_ALL_ITEMS} from './itemList
 import {ADD_POSITION, DELETE_POSITION, AREA_ADDED, AREA_REMOVED, POSITION_NAME_CHANGED, positionNameChangedEpic} from './positionList'
 import { undo } from './undo'
 import positions from './positionList'
+import baustellen from './baustellen'
 
 
 export const rootEpic = combineEpics(
@@ -15,7 +16,7 @@ export const rootEpic = combineEpics(
 );
 
 
-const rootReducer = undoable(
+const currentBaustelleReducer = undoable(
     combineReducers({
         positions,
         items,
@@ -27,6 +28,8 @@ const rootReducer = undoable(
             ADD_POSITION, DELETE_POSITION, undo(POSITION_NAME_CHANGED), AREA_ADDED, AREA_REMOVED])
     }
 );
+
+const rootReducer = combineReducers({current: currentBaustelleReducer, baustellen: baustellen});
 
 
 export default rootReducer
