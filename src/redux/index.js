@@ -9,11 +9,13 @@ import { undo } from './undo'
 import positions from './positionList'
 import baustellen from './baustellen'
 import id from './id'
+import { syncStateWithServerEpic } from './network'
 
 
 export const rootEpic = combineEpics(
     nameChangedEpic,
-    positionNameChangedEpic
+    positionNameChangedEpic,
+    syncStateWithServerEpic
 );
 
 

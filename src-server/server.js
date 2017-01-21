@@ -67,18 +67,24 @@ app.get('/:id', function (req, res) {
 });
 
 app.put('/:id', function (req, res) {
-
-    db.none("update states set name=$2, stateStr=$3 where id=$1", [req.params.id, req.body.name, req.body.state])
-        .then(data => {
-            res.sendStatus(202)
-        })
-        .catch(error => {
-            res.status(400).json({error: 'Cannot update this'})
-        });
+    console.log([req.params.id, req.body]);
+    if(req.body.name == null) {
+        res.status(400).json({error: 'name is missing'})
+    } else if(req.body.state == null) {
+        res.status(400).json({error: 'state is missing'})
+    } else {
+        db.none("update states set name=$2, stateStr=$3 where id=$1", [req.params.id, req.body.name, req.body.state])
+            .then(data => {
+                res.sendStatus(202)
+            })
+            .catch(error => {
+                res.status(400).json({error: 'Cannot update this'})
+            });
+    }
 });
 
 function prepareHtml(preLoadedState) {
-    let $ = cheerio.load(htmlTemplate.slice());
+    let $ = cheerio.load(htmlTemplate);
 
     // put the initial state into the html
     let initScript = $(`<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preLoadedState).replace(/</g, '\\x3c')}</script>`);
