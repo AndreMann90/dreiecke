@@ -32,7 +32,7 @@ const configureStore = (initState) => {
 
 // not that nice, but necessary if using Immutable.js since structural information in json lost need to be recovered
 function initImmutable(initState) {
-    if(initState.current && initState.current.present) {
+    if(initState && initState.current && initState.current.present) {
         initState.current.present.positions = initializePositionListWith(initState.current.present.positions);
         initState.current.present.items = initializeItemListWith(initState.current.present.items);
     }

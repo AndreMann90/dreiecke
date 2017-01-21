@@ -37,8 +37,10 @@ export function initializePositionListWith(preloaded) {
         const pos = [];
         const posMap = [];
         for (const key in preloaded.positions) {
-            pos.push([parseFloat(key), preloaded.positions[key]]);
-            posMap.push([parseFloat(key), Immutable.Set(preloaded.posToAreasMap[key])])
+            if(preloaded.positions.hasOwnProperty(key)) {
+                pos.push([parseFloat(key), preloaded.positions[key]]);
+                posMap.push([parseFloat(key), Immutable.Set(preloaded.posToAreasMap[key])]);
+            }
         }
         return Immutable.Map({
             activeKey: preloaded.activeKey,
