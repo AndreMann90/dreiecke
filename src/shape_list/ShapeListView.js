@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Isvg from 'react-inlinesvg';
 
 import { Table, Button, Glyphicon } from 'react-bootstrap';
 
@@ -64,7 +65,7 @@ class TriangleRow extends Component {
             <tr>
                 {selectTableData}
                 <td>{this.props.item.areaNumber}</td>
-                <td>{this.props.item.shape}</td>
+                <td><Isvg src={`${process.env.PUBLIC_URL}/svg/${this.props.item.shape}.svg`} cacheGetRequests={true}/></td>
                 <td>{this.props.item.formula}</td>
                 <td>{this.props.item.areaStr}</td>
                 {!this.props.deletable

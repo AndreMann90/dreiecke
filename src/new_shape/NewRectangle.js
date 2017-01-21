@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Isvg from 'react-inlinesvg';
 
 import NewShape from './NewShape'
 
@@ -15,7 +14,7 @@ export default class NewRectangle extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = <Isvg src={process.env.PUBLIC_URL + "/svg/rectangle.svg"} cacheGetRequests={true}>{name}</Isvg>;
+            newItem.shape = "rectangle";
             newItem.formula = newItemExpaned[a] + ' * ' + newItemExpaned[b];
             this.props.onNew(newItem)
         };

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Isvg from 'react-inlinesvg';
 
 import NewShape from './NewShape'
 
@@ -16,7 +15,7 @@ export default class NewTrapezoid extends Component {
         };
 
         const onNew = (newItem, newItemExpaned) => {
-            newItem.shape = <Isvg src={process.env.PUBLIC_URL + "/svg/trapezoid.svg"} cacheGetRequests={true}>{name}</Isvg>;
+            newItem.shape = "trapezoid";
             newItem.formula = '(' + newItemExpaned[a] + ' + ' + newItemExpaned[b] + ') / 2 * ' + newItemExpaned[c];
             this.props.onNew(newItem)
         };
