@@ -9,6 +9,7 @@ import { undo } from './undo'
 import positions from './positionList'
 import baustellen, { newBaustelleEpic } from './baustellen'
 import id from './id'
+import alert, { hideAlertEpic } from './alert'
 import { syncStateWithServerEpic } from './network'
 
 
@@ -16,7 +17,8 @@ export const rootEpic = combineEpics(
     nameChangedEpic,
     positionNameChangedEpic,
     syncStateWithServerEpic,
-    newBaustelleEpic
+    newBaustelleEpic,
+    hideAlertEpic
 );
 
 
@@ -36,7 +38,8 @@ const currentBaustelleReducer = undoable(
 const rootReducer = combineReducers({
     current: currentBaustelleReducer,
     baustellen,
-    id
+    id,
+    alert
 });
 
 

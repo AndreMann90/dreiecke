@@ -7,7 +7,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/debounceTime';
 
-import { ADD_BAUSTELLE, ADD_BAUSTELLE_SUCCESS, ADD_BAUSTELLE_FAILED } from './baustellen'
+import { ADD_BAUSTELLE, ADD_BAUSTELLE_SUCCESS } from './baustellen'
+import { SHOW_ALERT, HIDE_ALERT, showAlert } from './alert'
 import { SET_ID, idSelector } from './id'
 import { nameSelector } from './name'
 
@@ -18,11 +19,8 @@ import { nameSelector } from './name'
 export const url = 'http://localhost:9000/';
 
 // actions
-const SYNCHRONIZED = 'SYNCHRONIZED';
+export const SYNCHRONIZED = 'SYNCHRONIZED';
 const synchronized = {type: SYNCHRONIZED};
-
-const SYNC_FAILED = 'SYNC_FAILED';
-const syncFailed = payload => ({ type: SYNC_FAILED, payload, error: true });
 
 const currentBaustelleExtractor = state => ({current: {present: state.current.present}});
 
@@ -31,7 +29,8 @@ const currentBaustelleExtractor = state => ({current: {present: state.current.pr
 // option 1: rather dump (very wasteful) but a generic server can be written that does not need to know anything about the redux app
 export const syncStateWithServerEpic = (action$, store) =>
     action$.filter(action => store && store.getState()
-                    && ![SYNCHRONIZED, SYNC_FAILED, SET_ID, ADD_BAUSTELLE, ADD_BAUSTELLE_SUCCESS, ADD_BAUSTELLE_FAILED].includes(action.type)) // optionally add more that shall not be synchronized
+                    && ![SYNCHRONIZED, SET_ID, SHOW_ALERT, HIDE_ALERT,
+                        ADD_BAUSTELLE, ADD_BAUSTELLE_SUCCESS].includes(action.type)) // optionally add more that shall not be synchronized
         .debounceTime(2000)
         .map(x => ({
             id: idSelector(store.getState()),
@@ -47,7 +46,8 @@ export const syncStateWithServerEpic = (action$, store) =>
                 })
                 .map(success => synchronized)
                 .catch(error => Observable.of(
-                    syncFailed(error)
+                    showAlert('Synchronisation fehltgeschlagen', 'Der aktuelle Stand konnte nicht gespeichert werden. ' +
+                        'Drucke deine Arbeit unbedingt aus, da diese sonst verloren geht!')
                 ))
         );
 

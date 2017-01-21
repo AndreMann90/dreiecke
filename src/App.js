@@ -7,6 +7,7 @@ import NewShapeControl from './NewShapeControl';
 import ShapeList from './shape_list/ShapeList';
 import ShapeControl from './PositionControl'
 import Foot from './Foot'
+import Alert from './Alert'
 
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
@@ -23,6 +24,7 @@ class AppView extends Component {
         <Grid className="noprint">
             <Row>
                 <Col>
+                    <Alert/>
                     <PageHeader>Schritt 1 <small>Flächen anlegen</small></PageHeader>
                 </Col>
             </Row>

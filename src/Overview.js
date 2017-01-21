@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addBaustelle, baustellenSelector } from './redux/baustellen'
 
+import Alert from './Alert'
 import { PageHeader, ListGroup, ListGroupItem, Grid, Row, Col, Button } from 'react-bootstrap';
 
 class OverviewView extends Component {
@@ -12,7 +13,7 @@ class OverviewView extends Component {
             <Row>
                 <Col>
                     <PageHeader>Baustellen App</PageHeader>
-
+                    <Alert/>
                     <ListGroup>
                         {this.props.baustellen.map(item => (
                             <ListGroupItem key={item.id} href={item.id}>{item.name}</ListGroupItem>
