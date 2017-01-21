@@ -7,7 +7,7 @@ import {items, areaNo, ADD_ITEM, DELETE_ITEM, DELETE_ALL_ITEMS} from './itemList
 import {ADD_POSITION, DELETE_POSITION, AREA_ADDED, AREA_REMOVED, POSITION_NAME_CHANGED, positionNameChangedEpic} from './positionList'
 import { undo } from './undo'
 import positions from './positionList'
-import baustellen from './baustellen'
+import baustellen, { newBaustelleEpic } from './baustellen'
 import id from './id'
 import { syncStateWithServerEpic } from './network'
 
@@ -15,7 +15,8 @@ import { syncStateWithServerEpic } from './network'
 export const rootEpic = combineEpics(
     nameChangedEpic,
     positionNameChangedEpic,
-    syncStateWithServerEpic
+    syncStateWithServerEpic,
+    newBaustelleEpic
 );
 
 

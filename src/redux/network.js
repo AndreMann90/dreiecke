@@ -5,17 +5,17 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/debounceTime';
 
+import { ADD_BAUSTELLE, ADD_BAUSTELLE_SUCCESS, ADD_BAUSTELLE_FAILED } from './baustellen'
 import { SET_ID, idSelector } from './id'
 import { nameSelector } from './name'
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Status: DRAFT for 2 option  /////////////////////////////////////////////////////////////////////////////////////////
+// network.js is responsible for synchronizing the state with the server  //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const url = 'http://localhost:9000/';
+export const url = 'http://localhost:9000/';
 
 // actions
 const SYNCHRONIZED = 'SYNCHRONIZED';
@@ -30,8 +30,9 @@ const currentBaustelleExtractor = state => ({current: {present: state.current.pr
 
 // option 1: rather dump (very wasteful) but a generic server can be written that does not need to know anything about the redux app
 export const syncStateWithServerEpic = (action$, store) =>
-    action$.filter(action => store && store.getState() && ![SYNCHRONIZED, SYNC_FAILED, SET_ID].includes(action.type)) // optionally add more that shall not be synchronized
-        .debounceTime(6000)
+    action$.filter(action => store && store.getState()
+                    && ![SYNCHRONIZED, SYNC_FAILED, SET_ID, ADD_BAUSTELLE, ADD_BAUSTELLE_SUCCESS, ADD_BAUSTELLE_FAILED].includes(action.type)) // optionally add more that shall not be synchronized
+        .debounceTime(2000)
         .map(x => ({
             id: idSelector(store.getState()),
             name: nameSelector(store.getState()),
@@ -50,6 +51,10 @@ export const syncStateWithServerEpic = (action$, store) =>
                 ))
         );
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DRAFT for 2. option  ////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // option 2: Synchronize actions only. Drawback: server needs to know all the actions that can be performed
 // Remarks on possible server implementation:
 //  - potentially reuse reducers if using node js server - in order to do so: idea is to pick users store for ID and then apply reducers to this particular user store. However, reading the particular user store from DB and writing it back may be expensive
@@ -66,7 +71,7 @@ export const syncActionsWithServerEpic = action$ =>
         })
         .mergeMap( data =>
             ajax.put(url, JSON.stringify(data))
-                // .retry(3) TODO need to prevent order of actions being send
+                // .retry(3) TO DO need to prevent order of actions being send
                 .catch(error => Observable.of(
                     syncFailed(error.response)
                 ))

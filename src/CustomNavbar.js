@@ -18,7 +18,7 @@ class CustomNavbarView extends Component {
         <Navbar>
             <Navbar.Header>
                 <Navbar.Brand>
-                    <a href="#">Baustellenaufmaße</a>
+                    <a href="/">Baustellenaufmaße</a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
             </Navbar.Header>

@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const cheerio = require('cheerio');
+const dateFormat = require('date-format');
 
 const pgp = require('pg-promise')();
 import dbConnection from './dbConnectionDetails';
@@ -12,8 +13,10 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { createStore } from 'redux'
 import App from '../src/App';
+import Overview from '../src/Overview';
 import { Provider } from 'react-redux';
 import rootReducer from '../src/redux/index'
+import { initImmutable } from '../src/redux/configureStore'
 
 
 const app = express();
@@ -28,7 +31,10 @@ app.get('/', function (req, res) {
 
     db.any("select name, id from states")
         .then(data => {
-            res.send(data); // TODO send html
+            const html = prepareHtml({baustellen: data}, <Overview/>);
+            res.status(200)
+                .set('Content-Type', 'text/html')
+                .send(html);
         })
         .catch(error => {
             console.log(error);
@@ -38,13 +44,18 @@ app.get('/', function (req, res) {
 
 app.post('/', function (req, res) {
 
+    let name = req.body.name;
+    if(!name) {
+        name = dateFormat('Erstellt am dd.MM.yyyy um hh:mm:ss', new Date())
+    }
+
     crypto.randomBytes(16, (err, buffer) => {
         const id = buffer.toString("hex");
 
         // use json data-type in postgres to validate statetr is proper json
-        db.none("insert into states(id, name, stateStr) values($1, $2, $3)", [id, req.body.name, '{}'])
+        db.none("insert into states(id, name, stateStr) values($1, $2, $3)", [id, name, '{}'])
             .then(function () {
-                res.status(201).json({id})
+                res.status(201).json({id, name})
             })
             .catch(function (error) {
                 res.status(500).json({error: 'Failed to create new instance'})
@@ -56,18 +67,18 @@ app.get('/:id', function (req, res) {
 
     db.one("select statestr from states where id=$1", req.params.id)
         .then(data => {
-            const html = prepareHtml(data.statestr);
-            res.status(403)
+            const html = prepareHtml(data.statestr, <App/>);
+            res.status(200)
                 .set('Content-Type', 'text/html')
                 .send(html);
         })
         .catch(error => {
+            console.log(error);
             res.status(400).json({error: 'No instance found for given id'})
         });
 });
 
 app.put('/:id', function (req, res) {
-    console.log([req.params.id, req.body]);
     if(req.body.name == null) {
         res.status(400).json({error: 'name is missing'})
     } else if(req.body.state == null) {
@@ -83,7 +94,7 @@ app.put('/:id', function (req, res) {
     }
 });
 
-function prepareHtml(preLoadedState) {
+function prepareHtml(preLoadedState, view) {
     let $ = cheerio.load(htmlTemplate);
 
     // put the initial state into the html
@@ -91,10 +102,11 @@ function prepareHtml(preLoadedState) {
     $('#initState').replaceWith(initScript);
 
     // render the initial html
+    initImmutable(preLoadedState);
     const store = createStore(rootReducer, preLoadedState);
     const startHtml = renderToString(
         <Provider store={store}>
-            <App/>
+            {view}
         </Provider>
     );
     // and put it into the html
