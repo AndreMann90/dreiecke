@@ -32,6 +32,24 @@ const initialState = Immutable.Map({
     posToAreasMap: Immutable.Map()
 });
 
+export function initializePositionListWith(preloaded) {
+    if(preloaded) {
+        const pos = [];
+        const posMap = [];
+        for (const key in preloaded.positions) {
+            pos.push([parseFloat(key), preloaded.positions[key]]);
+            posMap.push([parseFloat(key), Immutable.Set(preloaded.posToAreasMap[key])])
+        }
+        return Immutable.Map({
+            activeKey: preloaded.activeKey,
+            positions: Immutable.OrderedMap(pos),
+            posToAreasMap: Immutable.Map(posMap)
+        });
+    } else {
+        return initialState;
+    }
+}
+
 export default function positions(state = initialState, action) {
     switch (action.type) {
 

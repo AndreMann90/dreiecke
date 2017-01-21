@@ -19,7 +19,17 @@ export const areaNoChanged = (areaNo) => ({ type: AREA_NO_CHANGED, payload: area
 
 
 // reducer
-export function items(state =  Immutable.List(), action) {
+const initialState = Immutable.List();
+
+export function initializeItemListWith(preloaded) {
+    if(preloaded) {
+        return Immutable.List(preloaded);
+    } else {
+        return initialState;
+    }
+}
+
+export function items(state =  initialState, action) {
     switch (action.type) {
 
         case ADD_ITEM:
