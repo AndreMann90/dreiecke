@@ -16,7 +16,9 @@ class OverviewView extends Component {
                     <Alert/>
                     <ListGroup>
                         {this.props.baustellen.map(item => (
-                            <ListGroupItem key={item.id} href={item.id}>{item.name}</ListGroupItem>
+                            <ListGroupItem key={item.id} href={item.id} header={item.name}>
+                                Zuletzt geändert am {item.lastmodified}
+                            </ListGroupItem>
                         ))}
                     </ListGroup>
 

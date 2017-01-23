@@ -22,7 +22,7 @@ const addBaustelleSuccess = newBaustelle => ({ type: ADD_BAUSTELLE_SUCCESS, payl
 export default function baustellen(state = [], action) {
     switch (action.type) {
         case ADD_BAUSTELLE_SUCCESS:
-            return [ ...state, action.payload ];
+            return [ action.payload, ...state ];
 
         default:
             return state
@@ -42,7 +42,11 @@ export const newBaustelleEpic = (action$, store) =>
                     url: url,
                     body: {name: data.payload}
                 })
-                .map(success => addBaustelleSuccess({id: success.response.id, name: success.response.name}))
+                .map(success => addBaustelleSuccess({
+                    id: success.response.id,
+                    name: success.response.name,
+                    lastmodified: success.response.lastmodified
+                }))
                 .catch(error => Observable.of(
                     showAlert('Ups, da ist etwas schief gelaufen', 'Probiere es nochmal. Falls es dann immer noch nicht' +
                         ' geklappt hat, frage beim Administrator nach')

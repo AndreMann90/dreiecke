@@ -34,5 +34,6 @@ export const alertTextSelector = state => state.alert.text;
 
 // epics
 export const hideAlertEpic = (action$, store) =>
-    action$.ofType(ADD_BAUSTELLE_SUCCESS, SYNCHRONIZED)
+    action$.filter(() => alertShownSelector(store.getState()))
+        .ofType(ADD_BAUSTELLE_SUCCESS, SYNCHRONIZED)
         .map(() => hideAlert());

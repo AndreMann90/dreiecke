@@ -4,9 +4,11 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const cheerio = require('cheerio');
-const dateFormat = require('date-format');
+import moment from 'moment';
+moment.locale('de');
 
 const pgp = require('pg-promise')();
+import {types} from 'pg';
 import dbConnection from './dbConnectionDetails';
 
 import React from 'react'
@@ -25,12 +27,22 @@ const port = 9000;
 
 const htmlTemplate = fs.readFileSync(path.join(__dirname, '../build', 'index.html')); // load template into memory
 
+const formatStr = 'Do MMMM YYYY, hh:mm:ss';
+const TIMESTAMP_OID = 1114;
+const parseTimeFn = (val) => {
+    return val === null ? null : moment(val + "+0000").format(formatStr);
+};
+const decorateName = name => {
+    return name ? name : 'Ohne Name'
+};
+types.setTypeParser(TIMESTAMP_OID, parseTimeFn);
 const db = pgp(dbConnection);
 
 app.get('/', function (req, res) {
 
-    db.any("select name, id from states")
+    db.any("SELECT name, id, lastmodified FROM states ORDER BY lastmodified DESC")
         .then(data => {
+            data = data.map(item => {item.name = decorateName(item.name); return item});
             const html = prepareHtml({baustellen: data}, <Overview/>);
             res.status(200)
                 .set('Content-Type', 'text/html')
@@ -46,18 +58,27 @@ app.post('/', function (req, res) {
 
     let name = req.body.name;
     if(!name) {
-        name = dateFormat('Erstellt am dd.MM.yyyy um hh:mm:ss', new Date())
+        name = ''
     }
+    let state = req.body.state;
+    if(!state) {
+        state = '{}'
+    }
+    let timestamp = moment();
+    let lastmodified = timestamp.format(formatStr);
 
     crypto.randomBytes(16, (err, buffer) => {
         const id = buffer.toString("hex");
 
         // use json data-type in postgres to validate statetr is proper json
-        db.none("insert into states(id, name, stateStr) values($1, $2, $3)", [id, name, '{}'])
+        db.none("insert into states(id, name, stateStr, lastmodified) values($1, $2, $3, $4)", [id, name, state, timestamp.utc().format()])
             .then(function () {
-                res.status(201).json({id, name})
+                res.status(201).json({id, lastmodified, state,
+                    name: decorateName(name)
+                })
             })
             .catch(function (error) {
+                console.log(error);
                 res.status(500).json({error: 'Failed to create new instance'})
             });
     });
@@ -84,7 +105,8 @@ app.put('/:id', function (req, res) {
     } else if(req.body.state == null) {
         res.status(400).json({error: 'state is missing'})
     } else {
-        db.none("update states set name=$2, stateStr=$3 where id=$1", [req.params.id, req.body.name, req.body.state])
+        db.none("update states set name=$2, stateStr=$3, lastmodified=$4 where id=$1",
+                [req.params.id, req.body.name, req.body.state, moment.utc().format()])
             .then(data => {
                 res.sendStatus(202)
             })
