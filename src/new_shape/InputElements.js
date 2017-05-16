@@ -7,6 +7,7 @@ const controlWidth = 9;
 
 export const positivePattern = /^[0-9]*$/;
 export const lengthPattern = /^[0-9]*[,]?[0-9]{0,2}$/;
+export const sumPattern = /^[0-9]+[,]?[0-9]*([\s]*[+][\s]*[0-9]+[,]?[0-9]*)*$/;
 
 export function convenientZeroFcn(x) {
     return x === ',' ? '0,' : x;
