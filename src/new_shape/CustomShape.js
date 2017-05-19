@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {FocusableInput, lengthPattern, positivePattern, sumPattern, convenientZeroFcn, AddButton} from './InputElements'
+import {FocusableInput, positivePattern, intPattern, sumPattern, convenientZeroFcn, AddButton} from './InputElements'
 import { Form, Panel } from 'react-bootstrap';
 
 import {strToNum, atLeastTwoDecimals, numToStr} from '../util'
@@ -25,7 +25,7 @@ export default class CustomShape extends Component {
                     <FocusableInput ref={(input) => { this.textInput = input; }}
                                     name={"Formel:"} value={this.state.formula} onChange={(formula) => this.checkAndComputeSum(formula)} />
 
-                    <FocusableInput  pattern={lengthPattern} preFcn={convenientZeroFcn}
+                    <FocusableInput  pattern={intPattern} preFcn={convenientZeroFcn}
                                      name={"Ergebnis:"} value={this.state.result} onChange={(result) => this.setState({result})} />
 
                     <AddButton disabled={!this.state.result} />
@@ -61,7 +61,11 @@ export default class CustomShape extends Component {
         let result;
         if(sumPattern.test(this.state.formula)) {
             formula = this.formatFormula(this.state.formula);
-            result = this.computeSum(this.state.formula);
+            if(this.state.result.startsWith('-')) {
+                result = '-' + this.computeSum(this.state.formula);
+            } else {
+                result = this.computeSum(this.state.formula);
+            }
         } else {
             formula = this.state.formula;
             result = this.state.result;

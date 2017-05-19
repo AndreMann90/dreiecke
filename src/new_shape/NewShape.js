@@ -24,7 +24,7 @@ export default class NewShape extends Component {
 
     constructor(props) {
         super(props);
-        this.emptyState = this.props.inputNames.reduce((obj, v) => {obj[v] = ''; return obj}, {});
+        this.emptyState = this.props.inputNames.reduce((obj, v) => {obj[v] = ''; return obj}, {sign: 1});
         this.state = this.emptyState;
     }
 
@@ -47,7 +47,7 @@ export default class NewShape extends Component {
                                       name={n} value={this.state[n]} onChange={(val) => this.setState({[n]: val})} />)
                     )}
 
-                    <TextGroup name="Fläche:" text={this.areaText} />
+                    <TextGroup name="Fläche:" text={this.areaText} onClick={(val) => this.setState({sign: -1 * this.state.sign})} />
 
                     <AddButton disabled={!isFinite(this.area)}/>
                 </Form>
@@ -84,7 +84,7 @@ export default class NewShape extends Component {
 
     get area() {
         const values = this.props.inputNames.reduce((obj, v) => {obj[v] = strToNum(this.state[v]); return obj}, {} );
-        return this.props.areaFcn(values);
+        return this.props.areaFcn(values) * this.state.sign;
     }
 }
 

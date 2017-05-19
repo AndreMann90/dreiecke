@@ -7,6 +7,7 @@ const controlWidth = 9;
 
 export const positivePattern = /^[0-9]*$/;
 export const lengthPattern = /^[0-9]*[,]?[0-9]{0,2}$/;
+export const intPattern = /^[-]?[0-9]*[,]?[0-9]{0,2}$/;
 export const sumPattern = /^[0-9]+[,]?[0-9]*([\s]*[+][\s]*[0-9]+[,]?[0-9]*)*$/;
 
 export function convenientZeroFcn(x) {
@@ -57,10 +58,15 @@ export function TextGroup(props) {
             <Col componentClass={ControlLabel} sm={labelWidth}>
                 {props.name}
             </Col>
-            <Col sm={controlWidth}>
+            <Col sm={controlWidth - 2}>
                 <FormControl.Static>
                     {props.text}
                 </FormControl.Static>
+            </Col>
+            <Col sm={2}>
+                <Button bsSize="small" disabled={!props.text} onClick={props.onClick.bind(this)}>
+                    <Glyphicon glyph="minus"/>
+                </Button>
             </Col>
         </FormGroup>
     )
